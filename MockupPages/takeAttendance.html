@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        table tr td:first-child,
+        table tr td:nth-child(2),
+        table tr td:nth-child(3) {
+            max-width: 10px;
+        }
+
+        td img {
+            margin-left: 50%;
+            transform: translateX(-50%);
+            max-width: 100px;
+        }
+
+        .status {
+            color: rgb(0, 184, 0);
+        }
+
+        button.clickable {
+            display: block;
+            padding: 1px 5px;
+            margin: 0 auto;
+        }
+
+        button.clickable:hover {
+            cursor: pointer;
+            color: beige;
+            background-color: black;
+        }
+
+
+        td img {
+            border-radius: 5px;
+            border: 1px solid grey;
+        }
+
+        #submitAttendance {
+            display: block;
+            margin: 20px auto;
+            background-color: cadetblue;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 15px;
+            border: none;
+        }
+
+        #submitAttendance:hover{
+            cursor: pointer;
+            background-color: white;
+            color: cadetblue;
+            border: 1px solid black;
+        }
+    </style>
+    <script src="./script.js"></script>
+</head>
+
+<body>
+    <h1>Taking attendance of SE1723</h1>
+    <form action="">
+
+        <table>
+            <tr class="column">
+                <td>No</td>
+                <td>Group</td>
+                <td>Code</td>
+                <td>Name</td>
+                <td>Image</td>
+                <td>Status</td>
+                <td>Comment</td>
+                <td>Taker</td>
+                <!-- <td>Record time</td> -->
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>SE1723</td>
+                <td>HE170863</td>
+                <td>Nguyễn Thị Khánh Huyền</td>
+                <td>
+                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                    <br>
+                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                </td>
+                <td class="status">
+                    <input type="radio" name="isPresent" value="absent" id="abs" />
+                    <label for="abs" style="color: red;">Absent</label>
+                    <br>
+                    <input type="radio" name="isPresent" value="present" id="pre" />
+                    <label for="pre" style="color: green;">Present</label>
+                </td>
+                <td>
+                    <textarea name="comment" id="" cols="14" rows="5" style="resize: none; padding: 0 5px;" placeholder="Write your note here..."></textarea>
+                </td>
+                <td>sonnt5</td>
+                <!-- <td>17/2/2023 15:25:39</td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td> -->
+            </tr>
+        </table>
+        <input id="submitAttendance" type="button" value="Save Attendance">
+    </form>
+</body>
+
+</html>
