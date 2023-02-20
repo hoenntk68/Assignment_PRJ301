@@ -9,6 +9,11 @@ h1{
     text-align: center;
 }
 
+h3{
+    text-align: center;
+    color: cadetblue;
+}
+
 table{
     width: 80vw;
     margin: 0 auto;
