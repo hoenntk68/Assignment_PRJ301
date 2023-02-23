@@ -31,7 +31,7 @@ table td:hover{
     background-color: aliceblue;
 }
 
-table .column td{
+table .table-head td{
     text-align: center;
     padding: 0; /*overwrite*/
     background-color: cadetblue;

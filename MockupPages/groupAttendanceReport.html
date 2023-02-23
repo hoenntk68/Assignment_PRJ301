@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Attendance Report</title>
+    <link rel="stylesheet" href="./style.css">
+    
+    <!-- Link to FontAwesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-......" crossorigin="anonymous">
+
+    <!-- <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"> -->
+
+    <style>
+        table {
+            /* width: 100vw; */
+        }
+
+        table td {
+            padding: 5px;
+        }
+
+        table tr:nth-child(1) {
+            text-align: center;
+            position: sticky;
+            top: 0px;
+            z-index: 1;
+        }
+
+        table tr td:nth-child(1){
+            max-width: 10px;
+        }
+
+        table tr td:nth-child(n+2):nth-child(-n+3) {
+            width: 10%;
+        }
+
+        table td:nth-child(n+5):nth-child(-n+24){
+            max-width: 10px;
+        }
+
+        td img {
+            margin-left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            border-radius: 5px;
+            border: 1px solid grey;
+        }
+
+        button.clickable {
+            display: block;
+            padding: 1px 5px;
+            margin: 0 auto;
+            /* margin-bottom: 5px; */
+        }
+
+        button.clickable:hover {
+            cursor: pointer;
+            color: beige;
+            background-color: black;
+        }
+
+        input.isPresent{
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .absentPercentage{
+            text-align: center;
+        }
+    </style>
+
+    <script src="./script.js"></script>
+</head>
+
+<body>
+    
+    <h1>Attendance report of SE1723</h1>
+    <h3>Lecturer: sonnt5</h3>
+    <h3>Subject: PRJ301</h3>
+    <h3>Student group: ISE1723</h3>
+    <table>
+        <tr class="table-head">
+            <td>No</td>
+            <td>Name</td>
+            <td>Image</td>
+            <td>Absent</td>
+            <td>S1</td>
+            <td>S2</td>
+            <td>S3</td>
+            <td>S4</td>
+            <td>S5</td>
+            <td>S6</td>
+            <td>S7</td>
+            <td>S8</td>
+            <td>S9</td>
+            <td>S10</td>
+            <td>S11</td>
+            <td>S12</td>
+            <td>S13</td>
+            <td>S14</td>
+            <td>S15</td>
+            <td>S16</td>
+            <td>S17</td>
+            <td>S18</td>
+            <td>S19</td>
+            <td>S20</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen
+                <!-- <i class="fas fa-info-circle"></i> -->
+            </td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Hoang Mai Phuong</td>
+            <td>
+                <img style="display: initial;" id="phuong" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('phuong', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Khieu Minh Duc</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Pham Truong Giang</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Vu Ngoc Nhat</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">5%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Nguyen Thi Khanh Huyen</td>
+            <td>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+            </td>
+            <td class="absentPercentage">0%</td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+            <td>
+                <input class="isPresent" type="checkbox" disabled checked>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

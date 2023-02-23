@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,57 +8,41 @@
     <title>View Attendance</title>
     <link rel="stylesheet" href="./style.css">
     <style>
-        table tr td:first-child, 
-        table tr td:nth-child(2), 
-        table tr td:nth-child(3){
+        table tr td:first-child,
+        table tr td:nth-child(2),
+        table tr td:nth-child(3) {
             max-width: 10px;
         }
 
-        td img{
+        td img {
             margin-left: 50%;
             transform: translateX(-50%);
             max-width: 100px;
+            border-radius: 5px;
+            border: 1px solid grey;
         }
 
-        .status{
+        .status {
             color: rgb(0, 184, 0);
+
         }
 
-        button.clickable{
+        button.clickable {
             display: block;
             padding: 1px 5px;
             margin: 0 auto;
         }
 
-        button.clickable:hover{
+        button.clickable:hover {
             cursor: pointer;
             color: beige;
             background-color: black;
         }
-
-
-        td img{
-            border-radius: 5px;
-            border: 1px solid grey;
-        }
     </style>
 
-    <script src="./script.js">
-        // function toggleView(stuID, triggerer){
-        //     const myImg = document.getElementById(stuID);
-        //     console.log(myImg);
-        //     console.log(triggerer.innerHTML)
-        //     if (triggerer.innerHTML == 'View image'){
-        //         myImg.style.display = 'inline';
-        //         triggerer.innerHTML = 'Hide image';
-        //     } else {
-        //         myImg.style.display = 'none';
-        //         triggerer.innerHTML = 'View image';
-
-        //     }
-        // }
-    </script>
+    <script src="./script.js"></script>
 </head>
+
 <body>
     <h1>Attendance record of SE1723</h1>
     <h3>Lecturer: sonnt5</h3>
@@ -66,7 +51,7 @@
     <h3>Room: BE-303</h3>
 
     <table>
-        <tr class="column">
+        <tr class="table-head">
             <td>No</td>
             <td>Group</td>
             <td>Code</td>
@@ -193,4 +178,5 @@
         </tr>
     </table>
 </body>
+
 </html>
