@@ -182,7 +182,7 @@ begin
 	join Student stu on a.studentId = stu.studentId
 	where s.sessionId = @sessionId
 end
---exec getSessionReport 2
+--exec getSessionReport 1
 --drop proc getSessionReport
 
 
