@@ -13,8 +13,8 @@ import java.time.LocalTime;
  */
 public class TimeSlot {
 
-    private int slotId;
-    private int slotNumber;
+    private int id;
+    private int number;
     private Time startTime;
     private Time endTime;
 
@@ -34,20 +34,20 @@ public class TimeSlot {
         this.endTime = endTime;
     }
 
-    public int getSlotId() {
-        return slotId;
+    public int getId() {
+        return id;
     }
 
-    public void setSlotId(int slotId) {
-        this.slotId = slotId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getSlotNumber() {
-        return slotNumber;
+    public int getNumber() {
+        return number;
     }
 
-    public void setSlotNumber(int slotNumber) {
-        this.slotNumber = slotNumber;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
 }

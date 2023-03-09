@@ -35,19 +35,18 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(isAuthenticated(request))
-        {
-            //do business
-            doGet(request, response, (User)request.getSession().getAttribute("user"));
-        }
-        else
-        {
-            response.getWriter().println("access denied!");
+        if (isAuthenticated(request)) {
+            doGet(request, response, (User) request.getSession().getAttribute("user"));
+        } else {
+//            response.getWriter().println("access denied!");
+            response.sendRedirect("login");
         }
     }
-    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response,User user)
+
+    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response, User user)
             throws ServletException, IOException;
-    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response,User user)
+
+    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response, User user)
             throws ServletException, IOException;
 
     /**
@@ -61,14 +60,12 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(isAuthenticated(request))
-        {
+        if (isAuthenticated(request)) {
             //do business
-            doPost(request, response, (User)request.getSession().getAttribute("user"));
-        }
-        else
-        {
-            response.getWriter().println("access denied!");
+            doPost(request, response, (User) request.getSession().getAttribute("user"));
+        } else {
+//            response.getWriter().println("access denied!");
+            response.sendRedirect("login");
         }
     }
 

@@ -10,32 +10,32 @@ package model;
  */
 public class Student {
 
-    private String studentId;
-    private String studentName;
-    private String studentImage;
+    private String id;
+    private String name;
+    private String image;
 
-    public String getStudentId() {
-        return studentId;
+    public String getId() {
+        return id;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getStudentName() {
-        return studentName;
+    public String getName() {
+        return name;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getStudentImage() {
-        return studentImage;
+    public String getImage() {
+        return image;
     }
 
-    public void setStudentImage(String studentImage) {
-        this.studentImage = studentImage;
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }

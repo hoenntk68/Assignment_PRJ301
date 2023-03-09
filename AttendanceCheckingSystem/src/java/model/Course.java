@@ -10,23 +10,23 @@ package model;
  */
 public class Course {
 
-    private String courseId;
-    private String courseName;
+    private String id;
+    private String name;
 
-    public String getCourseId() {
-        return courseId;
+    public String getId() {
+        return id;
     }
 
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getName() {
+        return name;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

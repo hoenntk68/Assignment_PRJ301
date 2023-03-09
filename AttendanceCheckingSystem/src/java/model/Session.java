@@ -5,6 +5,8 @@
 package model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -12,28 +14,28 @@ import java.sql.Date;
  */
 public class Session {
 
-    private String sessionId;
-    private String sessionName;
+    private int id;
+    private String name;
     private Group group;
     private Instructor instructor;
     private Date date;
     private TimeSlot timeslot;
     private Room room;
 
-    public String getSessionId() {
-        return sessionId;
+    public int getId() {
+        return id;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getSessionName() {
-        return sessionName;
+    public String getName() {
+        return name;
     }
 
-    public void setSessionName(String sessionName) {
-        this.sessionName = sessionName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Group getGroup() {
@@ -74,6 +76,25 @@ public class Session {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public int getDayOfWeek() {
+        String s = date.toString();
+        String nums[] = s.split("-");
+        int[] ints = new int[3];
+        for (int i = 0; i < nums.length; i++) {
+            ints[i] = Integer.parseInt(nums[i]);
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.set(ints[0], ints[1] - 1, ints[2]);
+        return cal.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public static void main(String[] args) {
+        Session s = new Session();
+        s.setDate(Date.valueOf("2023-3-10"));
+        System.out.println(s.getDayOfWeek());
+
     }
 
 }
