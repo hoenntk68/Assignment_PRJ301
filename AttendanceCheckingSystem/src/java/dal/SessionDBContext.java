@@ -26,32 +26,32 @@ import model.TimeSlot;
  * @author Hp
  */
 public class SessionDBContext extends DBContext<Session> {
-    
+
     @Override
     public void insert(Session model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void update(Session model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void delete(Session model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public Session get(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public ArrayList<Session> all() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     public ArrayList<Session> getWeeklyTimetable(String monday, String instructorId) {
         ArrayList<Session> sessions = new ArrayList<>();
         PreparedStatement stm = null;
@@ -66,43 +66,34 @@ public class SessionDBContext extends DBContext<Session> {
                 Session session = new Session();
                 session.setId(rs.getInt("sessionId"));
                 session.setName(rs.getString("sessionName"));
-                
+
                 Room room = new Room();
                 room.setId(rs.getString("roomId"));
                 session.setRoom(room);
-                
-                Instructor instructor = new Instructor();                
+
+                Instructor instructor = new Instructor();
                 instructor.setId(rs.getString("instructorId"));
-//                instructor.setName(rs.getString("instructorName"));
                 session.setInstructor(instructor);
-                
+
                 TimeSlot slot = new TimeSlot();
-//                slot.setId(rs.getInt("slotId"));
                 slot.setNumber(rs.getInt("slotNumber"));
-//                slot.setDescription(rs.getString("description"));
                 slot.setStartTime(rs.getTime("startTime"));
                 slot.setEndTime(rs.getTime("endTime"));
                 session.setTimeslot(slot);
-                
-                Course course = new Course(); 
+
+                Course course = new Course();
                 course.setId(rs.getString("courseId"));
-//                course.setName(rs.getString("courseName"));
-                
+
                 Group group = new Group();
-//                group.setId(rs.getInt("groupId"));
                 group.setName(rs.getString("groupName"));
                 group.setCourse(course);
                 session.setGroup(group);
-                
-//                Calendar cal = Calendar.getInstance();
-//                int timeNum[] = TimeUtil.getTimeNumbers(rs.getString("date"));
-//                cal.set(timeNum[0], timeNum[1] - 1, timeNum[2]);
+
                 Date sqlDate = rs.getDate("date");
-//                session.setDate(cal);
                 session.setDate(sqlDate);
-                
+
                 sessions.add(session);
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(SessionDBContext.class
@@ -110,22 +101,22 @@ public class SessionDBContext extends DBContext<Session> {
         } finally {
             try {
                 rs.close();
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(SessionDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             try {
                 stm.close();
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(SessionDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
             try {
                 connection.close();
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(SessionDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
@@ -133,10 +124,10 @@ public class SessionDBContext extends DBContext<Session> {
         }
         return sessions;
     }
-    
+
     public static void main(String[] args) {
         SessionDBContext sessionDb = new SessionDBContext();
         ArrayList<Session> sessions = sessionDb.getWeeklyTimetable("2023-3-1", "sonnt5");
-        System.out.println("There are " + sessions.size() + " sessions.");         
+        System.out.println("There are " + sessions.size() + " sessions.");
     }
 }
