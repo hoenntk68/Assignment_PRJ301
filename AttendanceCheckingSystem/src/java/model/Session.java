@@ -92,7 +92,7 @@ public class Session {
 
     public static void main(String[] args) {
         Session s = new Session();
-        s.setDate(Date.valueOf("2023-3-10"));
+        s.setDate(Date.valueOf("2023-03-02"));
         System.out.println(s.getDayOfWeek());
 
     }

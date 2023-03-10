@@ -94,10 +94,10 @@ public class SessionDBContext extends DBContext<Session> {
                 group.setCourse(course);
                 session.setGroup(group);
                 
-                Calendar cal = Calendar.getInstance();
-                int timeNum[] = TimeUtil.getTimeNumbers(rs.getString("date"));
-                cal.set(timeNum[0], timeNum[1] - 1, timeNum[2]);
-                Date sqlDate = Date.valueOf(monday);
+//                Calendar cal = Calendar.getInstance();
+//                int timeNum[] = TimeUtil.getTimeNumbers(rs.getString("date"));
+//                cal.set(timeNum[0], timeNum[1] - 1, timeNum[2]);
+                Date sqlDate = rs.getDate("date");
 //                session.setDate(cal);
                 session.setDate(sqlDate);
                 
