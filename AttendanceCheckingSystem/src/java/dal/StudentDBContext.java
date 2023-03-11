@@ -4,66 +4,68 @@
  */
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Course;
-import model.Group;
-import model.Instructor;
+import model.Session;
+import model.Student;
 
 /**
  *
  * @author Hp
  */
-public class GroupDBContext extends DBContext<Group> {
-
+public class StudentDBContext extends DBContext<Student> {
+    
     @Override
-    public void insert(Group model) {
+    public void insert(Student model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
-    public void update(Group model) {
+    public void update(Student model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
-    public void delete(Group model) {
+    public void delete(Student model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
-    public Group get(int id) {
+    public Student get(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
+    public ArrayList<Student> all() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public int getNumberOfStudents(int groupId){
+        int noOfStudents = -1; 
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "exec getGroup ?";
+        String sql = "exec getStudentCount ?";
         try {
             stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);
+            stm.setInt(1, groupId);
             rs = stm.executeQuery();
             if (rs.next()) {
-                Group group = new Group();
-                group.setId(id);
-                group.setName(rs.getString("groupName"));
-                Course course = new Course();
-                course.setName(rs.getString("courseId"));
-                group.setCourse(course);
-                Instructor instructor = new Instructor();
-                instructor.setId(rs.getString("instructorId"));
-                return group;
+                noOfStudents = rs.getInt("noOfStudents");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(GroupDBContext.class
+            Logger.getLogger(StudentDBContext.class
                     .getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 rs.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(GroupDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -71,57 +73,45 @@ public class GroupDBContext extends DBContext<Group> {
                 stm.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(GroupDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
             try {
                 connection.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(GroupDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return null;
+        return noOfStudents;
     }
-
-    @Override
-    public ArrayList<Group> all() {
-        ArrayList<Group> groups = new ArrayList<>();
+    
+    public ArrayList<Student> getStudentsFromGroup(int groupId){
+        ArrayList<Student> students = new ArrayList<>();
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select \n"
-                + "g.groupId, g.groupName, g.courseId, c.courseName, g.instructorId, i.instructorName\n"
-                + "from [Group] g\n"
-                + "join Course c on g.courseId = c.courseId\n"
-                + "join Instructor i on g.instructorId = i.instructorId";
+        String sql = "exec getStudentsFromGroup ?";
         try {
             stm = connection.prepareStatement(sql);
+            stm.setInt(1, groupId);
             rs = stm.executeQuery();
             while (rs.next()) {
-                Group group = new Group();
-                Course course = new Course();
-                Instructor instructor = new Instructor();
-                group.setId(rs.getInt("groupId"));
-                group.setName(rs.getString("groupName"));
-                course.setId(rs.getString("courseId"));
-                course.setName(rs.getString("courseName"));
-                instructor.setId(rs.getString("instructorId"));
-                instructor.setName(rs.getString("instructorName"));
-                group.setCourse(course);
-                group.setInstructor(instructor);
-                groups.add(group);
-
+                Student student = new Student();
+                student.setId(rs.getString("studentId"));
+                student.setName(rs.getString("studentName"));
+                student.setImage(rs.getString("studentImage"));
+                students.add(student);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(GroupDBContext.class
+            Logger.getLogger(SessionDBContext.class
                     .getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 rs.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(GroupDBContext.class
+                Logger.getLogger(SessionDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -129,18 +119,24 @@ public class GroupDBContext extends DBContext<Group> {
                 stm.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(GroupDBContext.class
+                Logger.getLogger(SessionDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
             try {
                 connection.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(GroupDBContext.class
+                Logger.getLogger(SessionDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return groups;
+        return students;
     }
-
+    
+    public static void main(String[] args) {
+        StudentDBContext studentDb = new StudentDBContext();
+        ArrayList<Student> students = studentDb.getStudentsFromGroup(15);
+        System.out.println("There are " + students.size() + " students");
+    }
+    
 }

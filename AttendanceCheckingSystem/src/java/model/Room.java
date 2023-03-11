@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Hp
@@ -11,6 +13,7 @@ package model;
 public class Room {
 
     private String id;
+    private ArrayList<Session> sessions = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -18,6 +21,14 @@ public class Room {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public ArrayList<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(ArrayList<Session> sessions) {
+        this.sessions = sessions;
     }
 
 }

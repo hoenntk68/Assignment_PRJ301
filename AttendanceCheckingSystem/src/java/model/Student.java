@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Hp
@@ -13,6 +15,7 @@ public class Student {
     private String id;
     private String name;
     private String image;
+    private ArrayList<Group> groups = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -36,6 +39,14 @@ public class Student {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
     }
 
 }

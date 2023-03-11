@@ -21,6 +21,7 @@ public class Session {
     private Date date;
     private TimeSlot timeslot;
     private Room room;
+    private boolean status;
 
     public int getId() {
         return id;
@@ -76,6 +77,14 @@ public class Session {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public int getDayOfWeek() {

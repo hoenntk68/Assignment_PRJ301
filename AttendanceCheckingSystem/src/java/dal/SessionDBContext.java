@@ -125,6 +125,97 @@ public class SessionDBContext extends DBContext<Session> {
         return sessions;
     }
 
+    public int getNumberOfSessions(int groupId) {
+        int noOfSessions = -1;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getSessionCount ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, groupId);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                noOfSessions = rs.getInt("noOfSessions");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return noOfSessions;
+    }
+
+    public ArrayList<Session> getSessionsFromGroup(int groupId) {
+        ArrayList<Session> sessions = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getSessionsFromGroup ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, groupId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Session session = new Session();
+                session.setId(rs.getInt("sessionId"));
+
+                Date sqlDate = rs.getDate("date");
+                session.setDate(sqlDate);
+
+                sessions.add(session);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return sessions;
+    }
+
     public static void main(String[] args) {
         SessionDBContext sessionDb = new SessionDBContext();
         ArrayList<Session> sessions = sessionDb.getWeeklyTimetable("2023-3-1", "sonnt5");

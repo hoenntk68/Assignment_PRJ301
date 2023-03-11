@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Hp
@@ -13,6 +15,7 @@ public class Instructor {
     private String id;
     private String name;
     private String image;
+    private ArrayList<Session> sessions = new ArrayList<>();
 
     public String getId() {
         return id;
