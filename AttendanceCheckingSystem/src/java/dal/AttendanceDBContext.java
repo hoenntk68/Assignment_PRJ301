@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Attendance;
@@ -65,7 +66,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 Session session = new Session();
                 session.setId(rs.getInt("sessionId"));
                 record.setSession(session);
-                
+
                 Student student = new Student();
                 student.setId(rs.getString("studentId"));
                 student.setName(rs.getString("studentName"));
@@ -103,6 +104,63 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         }
 
         return records;
+    }
+
+    public HashMap<Student, Integer> getAbsenceStat(int groupId) {
+        HashMap<Student, Integer> absent = new HashMap<>();
+        SessionDBContext sessionDb = new SessionDBContext();
+        int totalSessions = sessionDb.getNumberOfSessions(groupId);
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getAbsentPercentage ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, groupId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Student student = new Student();
+                student.setId(rs.getString("studentId"));
+                int absentPercentage = Math.round(rs.getInt("absentCount") * 100 / totalSessions + (float) 0.4);
+                absent.put(student, absentPercentage);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return absent;
+    }
+
+    public static void main(String[] args) {
+        AttendanceDBContext attendDb = new AttendanceDBContext();
+        HashMap<Student, Integer> absent = attendDb.getAbsenceStat(15);
+        for (HashMap.Entry<Student, Integer> entry : absent.entrySet()) {
+            Student key = entry.getKey();
+            int value = entry.getValue();
+            System.out.println(key.getId() + " :\t" + value + "%");
+        }
     }
 
 }

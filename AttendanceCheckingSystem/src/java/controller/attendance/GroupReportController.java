@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import model.Attendance;
 import model.Group;
 import model.Session;
@@ -80,7 +81,11 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
         StudentDBContext studentDb = new StudentDBContext();
         ArrayList<Student> students = studentDb.getStudentsFromGroup(groupId);
         request.setAttribute("students", students);
-        ArrayList<Integer> absents = new ArrayList<>();
+        HashMap<Student, Integer> absent = new HashMap<>();
+        Student s = new Student();
+        s.setId("HE150057");
+        absent.put(s, 55);
+        request.setAttribute("absent", absent);
 //        int noOfSession = sessionDb.getNumberOfSessions(groupId);
 //        request.setAttribute("noOfSession", noOfSession);
 //        int noOfStudent = studentDb.getNumberOfStudents(groupId);
@@ -94,15 +99,13 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
     }
     
     public static void main(String[] args) {
-        
-        SessionDBContext sessionDb = new SessionDBContext();
-        int noOfSessions = sessionDb.getNumberOfSessions(15);
-        StudentDBContext studentDb = new StudentDBContext();
-        int noOfStudent = studentDb.getNumberOfStudents(15);
-//        System.out.println("There are " + noOfSessions + " sessions and " + noOfStudent + " students");
-        
-        ArrayList<Student> students = studentDb.getStudentsFromGroup(15);
-        System.out.println("There are " + students.size() + " students");
+        AttendanceDBContext attendDb = new AttendanceDBContext();
+        HashMap<Student, Integer> absent = attendDb.getAbsenceStat(15);
+        for (HashMap.Entry<Student, Integer> entry : absent.entrySet()) {
+            Student key = entry.getKey();
+            int value = entry.getValue();
+            System.out.println(key.getId() + " :\t" + value + "%");
+        }
     }
 
 }

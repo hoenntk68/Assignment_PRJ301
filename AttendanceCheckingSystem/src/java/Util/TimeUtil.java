@@ -34,6 +34,7 @@ public class TimeUtil {
         int num[] = getTimeNumbers(date);
         calendar.set(num[0], num[1], num[2]);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        System.out.println("Day is: " + dayOfWeek);
         int daysUntilMonday = (dayOfWeek - Calendar.MONDAY + 7) % 7;
         calendar.add(Calendar.DAY_OF_YEAR, -daysUntilMonday);
         String monString = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DATE);
@@ -46,6 +47,9 @@ public class TimeUtil {
         calendar.set(num[0], num[1], num[2]);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         int daysUntilSunday = (dayOfWeek - Calendar.SUNDAY + 7) % 7 - 7;
+        if (daysUntilSunday == -7) {
+            daysUntilSunday = 0;
+        }
         calendar.add(Calendar.DAY_OF_YEAR, -daysUntilSunday);
         String sunString = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DATE);
         return sunString;
@@ -92,14 +96,9 @@ public class TimeUtil {
     }
 
     public static void main(String[] args) {
-        String date = "2023-3-11";
-        String monday = TimeUtil.getMonday(date);
-
-        String sunday = TimeUtil.getSunday(date);
-        ArrayList<Date> dates = DateTimeHelper.getListDates(Date.valueOf(monday), Date.valueOf(sunday));
-        for (Date d : dates){
-            System.out.println(d);
-        }
+        String date = "2023-3-12";
+        System.out.println(getMonday(date));
+        System.out.println(getSunday(date));
 
     }
 
