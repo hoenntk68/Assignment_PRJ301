@@ -14,11 +14,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Attendance;
 import model.Group;
 import model.Instructor;
 import model.Room;
 import model.Session;
 import model.Course;
+import model.Student;
 import model.TimeSlot;
 
 /**
@@ -44,7 +46,68 @@ public class SessionDBContext extends DBContext<Session> {
 
     @Override
     public Session get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Session session = new Session();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getSessionInfo ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                session.setId(id);
+                session.setDate(rs.getDate("date"));
+                
+                TimeSlot timeSlot = new TimeSlot();
+                timeSlot.setId(rs.getInt("slotId"));
+                timeSlot.setNumber(rs.getInt("slotNumber"));
+                session.setTimeslot(timeSlot);
+                
+                Room room = new Room();
+                room.setId(rs.getString("roomId"));
+                session.setRoom(room);
+                
+                Instructor instructor = new Instructor();
+                instructor.setId(rs.getString("lecturerId"));
+                session.setInstructor(instructor);
+                
+                
+                Group group = new Group();
+                Course course = new Course();
+                course.setId(rs.getString("courseId")); 
+                group.setCourse(course);
+                group.setId(rs.getInt("groupId"));
+                group.setName(rs.getString("groupName"));
+                session.setGroup(group);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return session;
     }
 
     @Override

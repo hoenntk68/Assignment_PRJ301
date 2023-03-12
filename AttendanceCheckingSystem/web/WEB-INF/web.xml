@@ -16,6 +16,10 @@
         <servlet-name>GroupReportController</servlet-name>
         <servlet-class>controller.attendance.GroupReportController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SessionAttendanceController</servlet-name>
+        <servlet-class>controller.attendance.SessionAttendanceController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>GroupReportController</servlet-name>
         <url-pattern>/groupReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SessionAttendanceController</servlet-name>
+        <url-pattern>/sessionAttendance</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

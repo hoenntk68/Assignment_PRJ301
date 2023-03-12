@@ -133,6 +133,52 @@ public class StudentDBContext extends DBContext<Student> {
         return students;
     }
     
+    public ArrayList<Student> getStudentsFromSession(int sessionId){ 
+        ArrayList<Student> students = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getStudentsFromSession ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, sessionId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Student student = new Student();
+                student.setId(rs.getString("studentId"));
+                student.setName(rs.getString("studentName"));
+                student.setImage(rs.getString("studentImage"));
+                students.add(student);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return students;
+    }
+    
     public static void main(String[] args) {
         StudentDBContext studentDb = new StudentDBContext();
         ArrayList<Student> students = studentDb.getStudentsFromGroup(15);

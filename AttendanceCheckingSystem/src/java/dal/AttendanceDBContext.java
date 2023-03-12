@@ -102,37 +102,24 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
-
         return records;
     }
 
     public HashMap<String, Integer> getAbsenceStat(int groupId) {
         HashMap<String, Integer> absent = new HashMap<>();
-        absent.put("HE170863", 13);
         SessionDBContext sessionDb = new SessionDBContext();
         int totalSessions = sessionDb.getNumberOfSessions(groupId);
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "exec getGroupReport ?";
+        String sql = "exec getAbsentCount ?";
         try {
             stm = connection.prepareStatement(sql);
             stm.setInt(1, groupId);
             rs = stm.executeQuery();
             while (rs.next()) {
                 String studentId = rs.getString("studentId");
-                if (absent.containsKey(studentId)) {
-                    if (rs.getBoolean("status") == false) {
-                        absent.put(studentId, absent.get(studentId) + 1);
-                    }
-                } else {
-                    if (rs.getBoolean("status") == false) {
-                        absent.put(studentId, 1);
-                    } else {
-                        absent.put(studentId, 0);
-                    }
-                }
-//                int absentPercentage = Math.round(absent.get(studentId) * 100 / totalSessions + (float) 0.4);
-//                absent.put(studentId, absentPercentage);
+                int absentCount = rs.getInt("absentCount");
+                absent.put(studentId, absentCount);
             }
         } catch (SQLException ex) {
             Logger.getLogger(AttendanceDBContext.class
@@ -168,6 +155,64 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         }
         return absent;
     }
+
+    public ArrayList<Attendance> getSessionReport(int sessionId) {
+        ArrayList<Attendance> records = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getSessionReport ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, sessionId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance record = new Attendance();
+                
+                SessionDBContext sessionDb = new SessionDBContext();
+                Session session = sessionDb.get(sessionId);
+                record.setSession(session);
+
+                Student student = new Student();
+                student.setId(rs.getString("studentId"));
+                student.setName(rs.getString("studentName"));
+                student.setImage("studentImage");
+                record.setStudent(student);
+                
+                record.setStatus(rs.getBoolean("status"));
+                record.setRecordTime(rs.getTime("recordTime"));
+                
+                records.add(record);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return records;
+    }
+
     public static void main(String[] args) {
         AttendanceDBContext attendDb = new AttendanceDBContext();
         HashMap<String, Integer> absent = attendDb.getAbsenceStat(15);

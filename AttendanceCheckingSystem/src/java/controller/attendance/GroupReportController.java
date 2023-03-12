@@ -70,6 +70,7 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
         int groupId = Integer.parseInt(request.getParameter("groupId"));
         AttendanceDBContext attendanceDb = new AttendanceDBContext();
+        AttendanceDBContext attendanceDb1 = new AttendanceDBContext();
         ArrayList<Attendance> records = attendanceDb.getGroupReport(groupId);
         GroupDBContext groupDb = new GroupDBContext();
         Group group = groupDb.get(groupId);
@@ -83,26 +84,26 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
         request.setAttribute("students", students);
         SessionDBContext sessionDb1 = new SessionDBContext();
         int totalSessions = sessionDb1.getNumberOfSessions(groupId);
-        HashMap<String, Integer> absent = new HashMap<>();
-        for (Attendance a : records) {
-            String studentId = a.getStudent().getId();
-            if (absent.containsKey(studentId)) {
-                if (a.isStatus() == false) {
-                    absent.put(studentId, absent.get(studentId) + 1);
-                }
-            } else {
-                if (a.isStatus() == false) {
-                    absent.put(studentId, 1);
-                } else {
-                    absent.put(studentId, 0);
-                }
-            }
-        }
-        for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
-            int absentCount = entry.getValue();
-            int percentage = Math.round(absentCount * 100 / totalSessions + (float) 0.4);
-            entry.setValue(percentage);
-        }
+        HashMap<String, Integer> absent = attendanceDb1.getAbsenceStat(groupId);
+//        for (Attendance a : records) {
+//            String studentId = a.getStudent().getId();
+//            if (absent.containsKey(studentId)) {
+//                if (a.isStatus() == false) {
+//                    absent.put(studentId, absent.get(studentId) + 1);
+//                }
+//            } else {
+//                if (a.isStatus() == false) {
+//                    absent.put(studentId, 1);
+//                } else {
+//                    absent.put(studentId, 0);
+//                }
+//            }
+//        }
+//        for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
+//            int absentCount = entry.getValue();
+//            int percentage = Math.round(absentCount * 100 / totalSessions + (float) 0.4);
+//            entry.setValue(percentage);
+//        }
         request.setAttribute("absent", absent);
 
         request.getRequestDispatcher("view/attendance/groupReport.jsp").forward(request, response);

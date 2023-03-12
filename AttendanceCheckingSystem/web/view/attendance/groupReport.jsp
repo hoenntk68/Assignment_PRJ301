@@ -5,15 +5,18 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Group Attendance Report</title>
         <style>
             table {
                 /* width: 100vw; */
+                table-layout: auto;
+                margin: 0 auto;
             }
 
             table td {
@@ -26,12 +29,12 @@
             table tr td:first-child{
                 padding-left: 1%;
                 text-align: left;
-                max-width: 20px;
+                /*max-width: 20px;*/
             }
 
             table .table-head td{
                 text-align: center;
-                padding: 0; /*overwrite*/
+                padding: 10px;
                 background-color: cadetblue;
                 color: white;
             }
@@ -44,25 +47,25 @@
             }
             
             table tr td.name {
-                width: 100px;
+                /*width: 100px;*/
             }
 
-            table tr td:nth-child(1){
-                max-width: 10px;
-            }
+/*            table tr td:nth-child(1){
+                max-width: 50px;
+            }*/
 
-            table tr td:nth-child(n+2):nth-child(-n+3) {
+/*            table tr td:nth-child(n+2):nth-child(-n+3) {
                 width: 10%;
             }
 
             table td:nth-child(n+5):nth-child(-n+24){
                 max-width: 10px;
-            }
+            }*/
 
             td img {
                 margin-left: 50%;
                 transform: translateX(-50%);
-                width: 90%;
+                /*width: 90%;*/
                 border-radius: 5px;
                 border: 1px solid grey;
             }
@@ -97,15 +100,16 @@
         </style>
     </head>
     <body>
-        <h1>Attendance report for group ${requestScope.group.name}</h1>
+        <h1 style="text-align: center">Attendance report for group ${requestScope.group.name}</h1>
         <c:set var="noOfSession" value="${requestScope.sessions.size()}"></c:set>
         <c:set var="noOfStudent" value="${requestScope.students.size()}"></c:set>
-        <h2>There are ${noOfSession} sessions</h2>
-        <h2>There are ${noOfStudent} students</h2>
+<!--        <h2>There are ${noOfSession} sessions</h2>
+        <h2>There are ${noOfStudent} students</h2>-->
         <table>
             <tr class="table-head">
                 <td>No</td>
                 <td class="name">Name</td>
+                <td>Code</td>
                 <td>Image</td>
                 <td>Absent</td>
                 <c:forEach items="${requestScope.sessions}" var="session" varStatus="i">
@@ -115,12 +119,19 @@
                 </c:forEach>
             </tr>
 
-            <c:forEach items="${requestScope.students}" var="student" varStatus="i">
+            <c:forEach items="${requestScope.students}" var="student" varStatus="iStudent">
                 <tr>
-                    <td>${i.index + 1}</td>
+                    <td>${iStudent.index + 1}</td>
                     <td class="name">${student.name}</td>
-                    <td>${student.image}</td>
-                    <td>0%</td>
+                    <td>${student.id}</td>
+                    <td>no image</td>
+                    <td>
+                        <c:forEach items="${requestScope.absent.entrySet()}" var="entry">
+                            <c:if test="${entry.key eq student.id}">
+                                ${entry.value}%
+                            </c:if>
+                        </c:forEach>
+                    </td>
                     <c:forEach items="${requestScope.sessions}" var="session" varStatus="iSession">
                         <td>
                             <input type="checkbox" disabled="disabled"
