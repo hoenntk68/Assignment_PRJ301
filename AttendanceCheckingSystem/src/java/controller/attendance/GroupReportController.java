@@ -81,15 +81,30 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
         StudentDBContext studentDb = new StudentDBContext();
         ArrayList<Student> students = studentDb.getStudentsFromGroup(groupId);
         request.setAttribute("students", students);
-        HashMap<Student, Integer> absent = new HashMap<>();
-        Student s = new Student();
-        s.setId("HE150057");
-        absent.put(s, 55);
+        SessionDBContext sessionDb1 = new SessionDBContext();
+        int totalSessions = sessionDb1.getNumberOfSessions(groupId);
+        HashMap<String, Integer> absent = new HashMap<>();
+        for (Attendance a : records) {
+            String studentId = a.getStudent().getId();
+            if (absent.containsKey(studentId)) {
+                if (a.isStatus() == false) {
+                    absent.put(studentId, absent.get(studentId) + 1);
+                }
+            } else {
+                if (a.isStatus() == false) {
+                    absent.put(studentId, 1);
+                } else {
+                    absent.put(studentId, 0);
+                }
+            }
+        }
+        for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
+            int absentCount = entry.getValue();
+            int percentage = Math.round(absentCount * 100 / totalSessions + (float) 0.4);
+            entry.setValue(percentage);
+        }
         request.setAttribute("absent", absent);
-//        int noOfSession = sessionDb.getNumberOfSessions(groupId);
-//        request.setAttribute("noOfSession", noOfSession);
-//        int noOfStudent = studentDb.getNumberOfStudents(groupId);
-//        request.setAttribute("noOfStudent", noOfStudent);
+
         request.getRequestDispatcher("view/attendance/groupReport.jsp").forward(request, response);
     }
 
@@ -97,14 +112,14 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
     protected void doPost(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     public static void main(String[] args) {
         AttendanceDBContext attendDb = new AttendanceDBContext();
-        HashMap<Student, Integer> absent = attendDb.getAbsenceStat(15);
-        for (HashMap.Entry<Student, Integer> entry : absent.entrySet()) {
-            Student key = entry.getKey();
+        HashMap<String, Integer> absent = attendDb.getAbsenceStat(15);
+        for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
+            String key = entry.getKey();
             int value = entry.getValue();
-            System.out.println(key.getId() + " :\t" + value + "%");
+            System.out.println(key + " :\t" + value + "%");
         }
     }
 

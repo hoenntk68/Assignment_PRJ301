@@ -52,7 +52,7 @@ public class LoginController extends HttpServlet {
         if (user != null) {
             request.getSession().setAttribute("user", user);
 //            response.getWriter().println("login successful!");
-            response.sendRedirect("weeklyTimetable?date=");
+            response.sendRedirect("index.html");
         } else {
             response.getWriter().println("login failed!");
             

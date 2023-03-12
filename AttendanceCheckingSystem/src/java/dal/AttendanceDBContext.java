@@ -106,22 +106,33 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         return records;
     }
 
-    public HashMap<Student, Integer> getAbsenceStat(int groupId) {
-        HashMap<Student, Integer> absent = new HashMap<>();
+    public HashMap<String, Integer> getAbsenceStat(int groupId) {
+        HashMap<String, Integer> absent = new HashMap<>();
+        absent.put("HE170863", 13);
         SessionDBContext sessionDb = new SessionDBContext();
         int totalSessions = sessionDb.getNumberOfSessions(groupId);
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "exec getAbsentPercentage ?";
+        String sql = "exec getGroupReport ?";
         try {
             stm = connection.prepareStatement(sql);
             stm.setInt(1, groupId);
             rs = stm.executeQuery();
             while (rs.next()) {
-                Student student = new Student();
-                student.setId(rs.getString("studentId"));
-                int absentPercentage = Math.round(rs.getInt("absentCount") * 100 / totalSessions + (float) 0.4);
-                absent.put(student, absentPercentage);
+                String studentId = rs.getString("studentId");
+                if (absent.containsKey(studentId)) {
+                    if (rs.getBoolean("status") == false) {
+                        absent.put(studentId, absent.get(studentId) + 1);
+                    }
+                } else {
+                    if (rs.getBoolean("status") == false) {
+                        absent.put(studentId, 1);
+                    } else {
+                        absent.put(studentId, 0);
+                    }
+                }
+//                int absentPercentage = Math.round(absent.get(studentId) * 100 / totalSessions + (float) 0.4);
+//                absent.put(studentId, absentPercentage);
             }
         } catch (SQLException ex) {
             Logger.getLogger(AttendanceDBContext.class
@@ -150,17 +161,24 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
+        for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
+            int absentCount = entry.getValue();
+            int percentage = Math.round(absentCount * 100 / totalSessions + (float) 0.4);
+            entry.setValue(percentage);
+        }
         return absent;
     }
-
     public static void main(String[] args) {
         AttendanceDBContext attendDb = new AttendanceDBContext();
-        HashMap<Student, Integer> absent = attendDb.getAbsenceStat(15);
-        for (HashMap.Entry<Student, Integer> entry : absent.entrySet()) {
-            Student key = entry.getKey();
+        HashMap<String, Integer> absent = attendDb.getAbsenceStat(15);
+        int noOfStudent = 0;
+        for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
+            noOfStudent++;
+            String key = entry.getKey();
             int value = entry.getValue();
-            System.out.println(key.getId() + " :\t" + value + "%");
+            System.out.println(key + " :\t" + value + "%");
         }
+        System.out.println("There are " + noOfStudent + " students");
     }
 
 }
