@@ -29,19 +29,40 @@ end
 ---------------------------------GET SESSION REPORT---------------------------------
 This procedure returns information about a session's attendance information.
 It takes 1 parameters: the id of the session
-*/ go
+*/ 
+go
 create proc getSessionReport
 @sessionId int
 as
 begin
-	select g.groupName, a.studentId, stu.studentName, stu.studentImage, a.status, a.comment, a.recordTime
+	select g.groupId, g.groupName, a.studentId, stu.studentName, stu.studentImage, a.status, a.comment, a.recordTime
 	from Attend a join Session s on a.sessionId = s.sessionId
 	join [Group] g on s.groupId = g.groupId 
 	join Student stu on a.studentId = stu.studentId
 	where s.sessionId = @sessionId
 end
---exec getSessionReport 2
 --drop proc getSessionReport
+--exec getSessionReport 2
+
+
+/*
+---------------------------------GET SESSION DETAIL---------------------------------
+This procedure returns information about a session with given Id.
+It takes 1 parameters: the id of the session
+*/ 
+go
+create proc getSessionInfo
+@sessionId int
+as
+begin
+	select s.*, c.courseId, ts.slotNumber, g.groupName from Session s
+	join TimeSlot ts on s.slotId = ts.slotId
+	join [Group] g on s.groupId = g.groupId
+	join Course c on g.courseId = c.courseId
+	where s.sessionId = @sessionId
+end
+--exec getSessionInfo 2
+--drop proc getSessionInfo
 
 
 /*
@@ -200,18 +221,28 @@ end
 Return groupName from given groupId
 */
 go
-create proc getAbsentPercentage
-@groupId int,
-@studentId varchar(8)
+create proc getAbsentCount
+@groupId int
 as 
 begin
-	select s.sessionId, s.date, s.groupId
-	from Session s
-	where s.groupId = @groupId
+	select s.studentId, cast(sum(1 - CAST(status as int)) as int) as absentCount
+	from Student s left join Attend a on s.studentId = a.studentId
+	left join Session ses on a.sessionId = ses.sessionId
+	where ses.groupId = @groupId  
+	group by s.studentId
 end
 
--- drop proc getAbsentPercentage
--- exec getAbsentPercentage 11
+-- drop proc getAbsentCount
+-- exec getAbsentCount 15
+
+select g.courseId, s.studentId, sum(1 - CAST(status as int)) as absentCount
+	from Student s left join Attend a on s.studentId = a.studentId
+	left join Session ses on a.sessionId = ses.sessionId
+	left join [Group] g on ses.groupId = g.groupId
+	where ses.groupId = 12  
+	group by s.studentId, g.courseId
+
+select * from [Group] where groupId = 12
 
 select 
 g.groupId, g.groupName, g.courseId, c.courseName, g.instructorId, i.instructorName
