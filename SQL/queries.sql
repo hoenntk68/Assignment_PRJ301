@@ -12,7 +12,7 @@ create proc getWeeklySchedule
 @instructorId varchar(20)
 as
 begin
-	select sessionId, sessionName, date, slotNumber, startTime, endTime, instructorId,roomId, groupName, courseId
+	select sessionId, sessionName, date, slotNumber, startTime, endTime, instructorId,roomId, groupName, courseId, s.status
 	from Session s 
 	join [Group] g on s.groupId = g.groupId
 	join TimeSlot ts on ts.slotId = s.slotId
@@ -22,7 +22,7 @@ begin
 	order by s.date
 end
 --drop proc getWeeklySchedule
---exec getWeeklySchedule '2023-3-1', 'sonnt5'
+--exec getWeeklySchedule '2023-3-20', 'sonnt5'
 
 
 /*
@@ -35,14 +35,15 @@ create proc getSessionReport
 @sessionId int
 as
 begin
-	select g.groupId, g.groupName, a.studentId, stu.studentName, stu.studentImage, a.status, a.comment, a.recordTime
-	from Attend a join Session s on a.sessionId = s.sessionId
-	join [Group] g on s.groupId = g.groupId 
+	select distinct stu.studentId, g.groupId, g.groupName, stu.studentName, stu.studentImage, a.status, a.comment, a.recordTime
+	from Attend a join Session ses on a.sessionId = ses.sessionId
 	join Student stu on a.studentId = stu.studentId
-	where s.sessionId = @sessionId
+	join [Group] g on ses.groupId = g.groupId
+	where ses.sessionId = @sessionId
 end
 --drop proc getSessionReport
 --exec getSessionReport 2
+
 
 
 /*
@@ -122,7 +123,7 @@ begin
 end
 
 -- drop proc getStudentsFromSession
--- exec getStudentsFromSession 40
+-- exec getStudentsFromSession 12
 
 /*
 ---------------------------------GET REPORT FROM SESSIONID---------------------------------
@@ -225,7 +226,7 @@ create proc getAbsentCount
 @groupId int
 as 
 begin
-	select s.studentId, cast(sum(1 - CAST(status as int)) as int) as absentCount
+	select s.studentId, sum(1 - CAST(a.status as int)) as absentCount
 	from Student s left join Attend a on s.studentId = a.studentId
 	left join Session ses on a.sessionId = ses.sessionId
 	where ses.groupId = @groupId  
@@ -249,3 +250,18 @@ g.groupId, g.groupName, g.courseId, c.courseName, g.instructorId, i.instructorNa
 from [Group] g
 join Course c on g.courseId = c.courseId
 join Instructor i on g.instructorId = i.instructorId
+
+
+select * from Attend where studentId = 'HE170863'
+select * from Attend where studentId = 'HE150057'
+select * from Attend where sessionId = 12
+
+--delete from Attend where sessionId = 12
+
+insert into Attend(studentId, sessionId, status, recordTime, comment) values 
+('HE170863', 12, 1, '2023-3-14 05:00:00', null), 
+('HE150057', 12, 1, '2023-3-14 05:00:00', null)
+
+insert into Attend(studentId, sessionId, status, recordTime, comment) values 
+('HE170863', 12, 1, '2023-03-14 02:58:28', 'cong chua hiphop'),
+('HE150057', 12, 1, '2023-03-14 02:58:28', 'hoang tu hiphop')

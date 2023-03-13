@@ -85,6 +85,13 @@ REFERENCES TimeSlot (slotId)
 ALTER TABLE [Session] ADD CONSTRAINT FK_Session_Instructor FOREIGN KEY(lecturerId)
 REFERENCES Instructor(instructorId)
 
+ALTER TABLE [Session] ADD status bit
+UPDATE [Session] SET [status] = 1
+UPDATE [Session] SET [status] = 0 WHERE date > '2023-03-13'
+
+select * from Session
+
+
 CREATE TABLE Attend
 (
 	studentId varchar(8) NOT NULL,
