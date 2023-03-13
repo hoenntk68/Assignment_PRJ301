@@ -70,7 +70,7 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
         int groupId = Integer.parseInt(request.getParameter("groupId"));
         AttendanceDBContext attendanceDb = new AttendanceDBContext();
-        AttendanceDBContext attendanceDb1 = new AttendanceDBContext();
+        AttendanceDBContext absentDb = new AttendanceDBContext();
         ArrayList<Attendance> records = attendanceDb.getGroupReport(groupId);
         GroupDBContext groupDb = new GroupDBContext();
         Group group = groupDb.get(groupId);
@@ -84,7 +84,8 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
         request.setAttribute("students", students);
         SessionDBContext sessionDb1 = new SessionDBContext();
         int totalSessions = sessionDb1.getNumberOfSessions(groupId);
-        HashMap<String, Integer> absent = attendanceDb1.getAbsenceStat(groupId);
+        HashMap<String, Integer> absent = absentDb.getAbsenceStat(groupId);
+//        HashMap<String, Integer> absent = new HashMap<>();
 //        for (Attendance a : records) {
 //            String studentId = a.getStudent().getId();
 //            if (absent.containsKey(studentId)) {

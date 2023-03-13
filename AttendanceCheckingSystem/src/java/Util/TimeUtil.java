@@ -7,6 +7,8 @@ package Util;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -95,11 +97,18 @@ public class TimeUtil {
         return new java.util.Date(sqlDate.getTime());
     }
 
+    public static String getDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = now.format(formatter);
+        return formattedDateTime;
+    }
+
     public static void main(String[] args) {
         String date = "2023-3-12";
-        System.out.println(getMonday(date));
-        System.out.println(getSunday(date));
-
+//        System.out.println(getMonday(date));
+//        System.out.println(getSunday(date));
+        System.out.println(getDateTime());
     }
 
 }

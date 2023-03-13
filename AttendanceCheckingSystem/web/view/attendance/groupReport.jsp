@@ -4,6 +4,8 @@
     Author     : Hp
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -45,22 +47,22 @@
                 top: 0px;
                 z-index: 1;
             }
-            
+
             table tr td.name {
                 /*width: 100px;*/
             }
 
-/*            table tr td:nth-child(1){
-                max-width: 50px;
-            }*/
+            /*            table tr td:nth-child(1){
+                            max-width: 50px;
+                        }*/
 
-/*            table tr td:nth-child(n+2):nth-child(-n+3) {
-                width: 10%;
-            }
-
-            table td:nth-child(n+5):nth-child(-n+24){
-                max-width: 10px;
-            }*/
+            /*            table tr td:nth-child(n+2):nth-child(-n+3) {
+                            width: 10%;
+                        }
+            
+                        table td:nth-child(n+5):nth-child(-n+24){
+                            max-width: 10px;
+                        }*/
 
             td img {
                 margin-left: 50%;
@@ -92,9 +94,17 @@
                 text-align: center;
             }
 
-            input[type=checkbox]:disabled {
-                background-color: green !important;
-                color: green !important;
+            /*            input[type=checkbox]:disabled {
+                            background-color: green !important;
+                            color: green !important;
+                        }*/
+
+            td img {
+                margin-left: 50%;
+                transform: translateX(-50%);
+                max-width: 100px;
+                border-radius: 5px;
+                border: 1px solid grey;
             }
 
         </style>
@@ -102,19 +112,19 @@
     <body>
         <h1 style="text-align: center">Attendance report for group ${requestScope.group.name}</h1>
         <c:set var="noOfSession" value="${requestScope.sessions.size()}"></c:set>
-        <c:set var="noOfStudent" value="${requestScope.students.size()}"></c:set>
-<!--        <h2>There are ${noOfSession} sessions</h2>
-        <h2>There are ${noOfStudent} students</h2>-->
+        <c:set var="noOfStudent" value="${requestScope.students.size()}"></c:set>  
         <table>
             <tr class="table-head">
                 <td>No</td>
-                <td class="name">Name</td>
+                <td class="name" style="min-width: 150px">Name</td>
                 <td>Code</td>
                 <td>Image</td>
                 <td>Absent</td>
-                <c:forEach items="${requestScope.sessions}" var="session" varStatus="i">
+                <c:forEach items="${requestScope.sessions}" var="session" varStatus="iSession">
                     <td>
-                        S${i.index + 1}
+                        S${iSession.index + 1}
+                        <br/>
+                        <fmt:formatDate value="${session.date}" pattern="dd/MM"></fmt:formatDate>
                     </td>
                 </c:forEach>
             </tr>
@@ -122,9 +132,11 @@
             <c:forEach items="${requestScope.students}" var="student" varStatus="iStudent">
                 <tr>
                     <td>${iStudent.index + 1}</td>
-                    <td class="name">${student.name}</td>
+                    <td style="min-width: 150px" class="name">${student.name}</td>
                     <td>${student.id}</td>
-                    <td>no image</td>
+                    <td>
+                        <img src="https://i0.wp.com/www.mnleadership.org/wp-content/uploads/2017/02/Anonymous-Avatar.png?ssl=1" alt="${record.student.id}"/>
+                    </td>
                     <td>
                         <c:forEach items="${requestScope.absent.entrySet()}" var="entry">
                             <c:if test="${entry.key eq student.id}">

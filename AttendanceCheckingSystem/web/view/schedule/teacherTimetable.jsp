@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Lecturer Timetable</title>
         <style>
 
 
@@ -33,7 +33,6 @@
                 display: inline-block;
                 color: #fff;
                 padding: 2px 5px;
-                margin: 5px;
                 border-radius: 5px;
                 font-weight: bold;
             }
@@ -60,7 +59,7 @@
                 margin: 4px 2px;
                 cursor: pointer;
                 border-radius: 4px;
-                transition: background-color 0.3s ease-in-out;
+                /*transition: background-color 0.3s ease-in-out;*/
                 position: relative;
                 overflow: hidden;
             }
@@ -68,7 +67,25 @@
             input[type="submit"]:hover{
                 transform: scaleX(1.05);
             }
-
+            
+            p{
+                margin: 3px;
+            }
+            
+            .attended{
+                color: green;
+                margin: 1px
+            }
+            
+            .not-yet{
+                color: red;
+            }
+            
+            .take-attend{
+                text-decoration: none;
+                background-color: #FFA500;
+                margin: 1px 0;
+            }
 
         </style>
     </head>
@@ -82,7 +99,7 @@
             Lecturer: <input type="text" value="${user.username}" disabled="disabled"/>
         </div>
 
-
+            
         <table>
             <tr class="table-head">
                 <td>
@@ -109,6 +126,23 @@
                             <c:forEach items="${requestScope.sessions}" var="session">
                                 <c:if test="${session.getDayOfWeek() % 8 eq dayStatus.index && session.timeslot.number eq slotStatus.index}">
                                     <p style="font-weight: bold; display: inline-block">${session.group.course.id} at ${session.room.id}</p>
+                                    <p
+                                        <c:if test="${session.status}">
+                                            class="attended"
+                                        </c:if>
+                                        <c:if test="${!session.status}">
+                                            class="not-yet"
+                                        </c:if>
+                                        >
+                                        <c:if test="${session.status}">
+                                            (Attended)
+                                        </c:if>
+                                        <c:if test="${!session.status}">
+                                            (Not yet)
+                                            <br/>
+                                            <a class="slot take-attend" href="#">Take attendance</a>
+                                        </c:if>
+                                    </p>
                                     <p class="slot group">${session.group.name}</p>
                                     <p class="slot"><fmt:formatDate type="time" pattern="HH:mm" value="${session.timeslot.startTime}"/> - <fmt:formatDate type="time" pattern="HH:mm" value="${session.timeslot.endTime}"/></p>
                                 </c:if> 

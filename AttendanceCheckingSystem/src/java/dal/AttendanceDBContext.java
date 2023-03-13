@@ -4,6 +4,7 @@
  */
 package dal;
 
+import Util.TimeUtil;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,6 +66,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 Attendance record = new Attendance();
                 Session session = new Session();
                 session.setId(rs.getInt("sessionId"));
+//                session.setDate(rs.getDate("date"));
                 record.setSession(session);
 
                 Student student = new Student();
@@ -73,6 +75,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 student.setImage("studentImage");
                 record.setStudent(student);
                 record.setStatus(rs.getBoolean("status"));
+
                 records.add(record);
             }
         } catch (SQLException ex) {
@@ -167,7 +170,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             rs = stm.executeQuery();
             while (rs.next()) {
                 Attendance record = new Attendance();
-                
+
                 SessionDBContext sessionDb = new SessionDBContext();
                 Session session = sessionDb.get(sessionId);
                 record.setSession(session);
@@ -177,10 +180,11 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 student.setName(rs.getString("studentName"));
                 student.setImage("studentImage");
                 record.setStudent(student);
-                
+
                 record.setStatus(rs.getBoolean("status"));
+                record.setComment(rs.getString("comment"));
                 record.setRecordTime(rs.getTime("recordTime"));
-                
+
                 records.add(record);
             }
         } catch (SQLException ex) {
@@ -213,17 +217,71 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         return records;
     }
 
+    public void insertMany(ArrayList<Attendance> records, int sessionId) {
+        PreparedStatement stm = null;
+        try {
+            String sql = "insert into Attend(studentId, sessionId, status, recordTime, comment) values ";
+
+            //set parameters
+            String studentId, comment, recordTime = "";
+            boolean status;
+            int noOfStudent = records.size();
+            for (int i = 0; i < noOfStudent; i++) {
+                Attendance a = records.get(i);
+                studentId = a.getStudent().getId();
+                comment = a.getComment();
+                status = a.isStatus();
+                sql += "\n";
+                sql += "('" + studentId + "', " + sessionId + ", " + (status ? 1 : 0) + ", '" + TimeUtil.getDateTime() + "', '" + comment + "'),";
+            }
+            sql = sql.substring(0, sql.length() - 1);
+            System.out.println(sql);
+            stm = connection.prepareStatement(sql);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         AttendanceDBContext attendDb = new AttendanceDBContext();
-        HashMap<String, Integer> absent = attendDb.getAbsenceStat(15);
-        int noOfStudent = 0;
-        for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
-            noOfStudent++;
-            String key = entry.getKey();
-            int value = entry.getValue();
-            System.out.println(key + " :\t" + value + "%");
-        }
-        System.out.println("There are " + noOfStudent + " students");
+        ArrayList<Attendance> records = new ArrayList<>();
+
+        Attendance a1 = new Attendance();
+        Student stu1 = new Student();
+        stu1.setId("HE170863");
+        a1.setStudent(stu1);
+        Session ses1 = new Session();
+        ses1.setId(12);
+        a1.setSession(ses1);
+        a1.setComment("cong chua hiphop");
+        a1.setStatus(true);
+
+        Attendance a2 = new Attendance();
+        Student stu2 = new Student();
+        stu2.setId("HE150057");
+        a2.setStudent(stu2);
+        Session ses2 = new Session();
+        ses2.setId(12);
+        a2.setSession(ses2);
+        a2.setComment("hoang tu hiphop");
+        a2.setStatus(true);
+
+        records.add(a1);
+        records.add(a2);
+
+        attendDb.insertMany(records, 12);
     }
 
 }

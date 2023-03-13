@@ -57,24 +57,23 @@ public class SessionDBContext extends DBContext<Session> {
             if (rs.next()) {
                 session.setId(id);
                 session.setDate(rs.getDate("date"));
-                
+
                 TimeSlot timeSlot = new TimeSlot();
                 timeSlot.setId(rs.getInt("slotId"));
                 timeSlot.setNumber(rs.getInt("slotNumber"));
                 session.setTimeslot(timeSlot);
-                
+
                 Room room = new Room();
                 room.setId(rs.getString("roomId"));
                 session.setRoom(room);
-                
+
                 Instructor instructor = new Instructor();
                 instructor.setId(rs.getString("lecturerId"));
                 session.setInstructor(instructor);
-                
-                
+
                 Group group = new Group();
                 Course course = new Course();
-                course.setId(rs.getString("courseId")); 
+                course.setId(rs.getString("courseId"));
                 group.setCourse(course);
                 group.setId(rs.getInt("groupId"));
                 group.setName(rs.getString("groupName"));
@@ -129,6 +128,7 @@ public class SessionDBContext extends DBContext<Session> {
                 Session session = new Session();
                 session.setId(rs.getInt("sessionId"));
                 session.setName(rs.getString("sessionName"));
+                session.setStatus(rs.getBoolean("status"));
 
                 Room room = new Room();
                 room.setId(rs.getString("roomId"));
@@ -279,9 +279,17 @@ public class SessionDBContext extends DBContext<Session> {
         return sessions;
     }
 
+    
     public static void main(String[] args) {
         SessionDBContext sessionDb = new SessionDBContext();
-        ArrayList<Session> sessions = sessionDb.getWeeklyTimetable("2023-3-1", "sonnt5");
-        System.out.println("There are " + sessions.size() + " sessions.");
+//        ArrayList<Session> sessions = sessionDb.getWeeklyTimetable("2023-3-1", "sonnt5");
+//        System.out.println("There are " + sessions.size() + " sessions.");
+
+
+//        ArrayList<Student> students = sessionDb.getStudents(15);
+//        System.out.println("There are " + students.size() + " students.");
+//        for (Student s : students) {
+//            System.out.println(s.getId() + " " + s.getName());
+//        }
     }
 }

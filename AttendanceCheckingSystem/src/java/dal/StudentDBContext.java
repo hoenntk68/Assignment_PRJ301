@@ -19,34 +19,34 @@ import model.Student;
  * @author Hp
  */
 public class StudentDBContext extends DBContext<Student> {
-    
+
     @Override
     public void insert(Student model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void update(Student model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void delete(Student model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public Student get(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public ArrayList<Student> all() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    public int getNumberOfStudents(int groupId){
-        int noOfStudents = -1; 
+
+    public int getNumberOfStudents(int groupId) {
+        int noOfStudents = -1;
         PreparedStatement stm = null;
         ResultSet rs = null;
         String sql = "exec getStudentCount ?";
@@ -86,8 +86,8 @@ public class StudentDBContext extends DBContext<Student> {
         }
         return noOfStudents;
     }
-    
-    public ArrayList<Student> getStudentsFromGroup(int groupId){
+
+    public ArrayList<Student> getStudentsFromGroup(int groupId) {
         ArrayList<Student> students = new ArrayList<>();
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -104,14 +104,14 @@ public class StudentDBContext extends DBContext<Student> {
                 students.add(student);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(SessionDBContext.class
+            Logger.getLogger(StudentDBContext.class
                     .getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 rs.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -119,21 +119,21 @@ public class StudentDBContext extends DBContext<Student> {
                 stm.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
             try {
                 connection.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
         return students;
     }
-    
-    public ArrayList<Student> getStudentsFromSession(int sessionId){ 
+
+    public ArrayList<Student> getStudentsFromSession(int sessionId) {
         ArrayList<Student> students = new ArrayList<>();
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -150,14 +150,14 @@ public class StudentDBContext extends DBContext<Student> {
                 students.add(student);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(SessionDBContext.class
+            Logger.getLogger(StudentDBContext.class
                     .getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 rs.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -165,24 +165,24 @@ public class StudentDBContext extends DBContext<Student> {
                 stm.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
             try {
                 connection.close();
 
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDBContext.class
+                Logger.getLogger(StudentDBContext.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
         return students;
     }
-    
+
     public static void main(String[] args) {
         StudentDBContext studentDb = new StudentDBContext();
         ArrayList<Student> students = studentDb.getStudentsFromGroup(15);
         System.out.println("There are " + students.size() + " students");
     }
-    
+
 }
