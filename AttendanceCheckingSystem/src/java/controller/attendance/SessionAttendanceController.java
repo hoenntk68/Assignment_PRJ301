@@ -79,7 +79,7 @@ public class SessionAttendanceController extends BaseRequiredAuthenticatedContro
         ArrayList<Student> students = studentDb.getStudentsFromSession(sessionId);
         request.setAttribute("students", students);
         
-        request.getRequestDispatcher("view/attendance/sessionAttendance.jsp").forward(request, response);
+        request.getRequestDispatcher("../view/instructor/attendance/sessionAttendance.jsp").forward(request, response);
     }
 
     @Override

@@ -30,23 +30,23 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>TimetableController</servlet-name>
-        <url-pattern>/weeklyTimetable</url-pattern>
+        <url-pattern>/instructor/weeklyTimetable</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SessionReportController</servlet-name>
-        <url-pattern>/sessionReport</url-pattern>
+        <url-pattern>/instructor/sessionReport</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GroupReportController</servlet-name>
-        <url-pattern>/groupReport</url-pattern>
+        <url-pattern>/instructor/groupReport</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SessionAttendanceController</servlet-name>
-        <url-pattern>/sessionAttendance</url-pattern>
+        <url-pattern>/instructor/sessionAttendance</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AttendanceTakingController</servlet-name>
-        <url-pattern>/attendanceTaking</url-pattern>
+        <url-pattern>/instructor/attendanceTaking</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

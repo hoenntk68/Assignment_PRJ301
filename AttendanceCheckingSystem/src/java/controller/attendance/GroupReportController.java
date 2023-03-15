@@ -107,7 +107,7 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
 //        }
         request.setAttribute("absent", absent);
 
-        request.getRequestDispatcher("view/attendance/groupReport.jsp").forward(request, response);
+        request.getRequestDispatcher("../view/instructor/attendance/groupReport.jsp").forward(request, response);
     }
 
     @Override

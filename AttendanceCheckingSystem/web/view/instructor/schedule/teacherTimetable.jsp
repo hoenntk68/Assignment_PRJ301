@@ -93,6 +93,8 @@
         <h1 style="text-align: center">
             Weekly Timetable
         </h1>
+        <h1 style="text-align: center">
+        </h1>
         <br/>
         <div style="text-align: center; margin-bottom: 10px">
             <c:set var="user" value="${requestScope.user}"></c:set>

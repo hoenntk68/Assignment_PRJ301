@@ -92,7 +92,10 @@ public class TimeTableController extends BaseRequiredAuthenticatedController {
         request.setAttribute("user", user);
         request.setAttribute("dates", dates);
         request.setAttribute("date", date);
-        request.getRequestDispatcher("/view/schedule/teacherTimetable.jsp").forward(request, response);
+        
+        String url = request.getServletPath();
+        request.setAttribute("url", url);
+        request.getRequestDispatcher("../view/instructor/schedule/teacherTimetable.jsp").forward(request, response);
     }
 
     @Override

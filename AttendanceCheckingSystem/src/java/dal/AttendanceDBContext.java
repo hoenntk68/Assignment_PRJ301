@@ -284,4 +284,80 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         attendDb.insertMany(records, 12);
     }
 
+    public void updateAtts(ArrayList<Attendance> atts, int sessionid) {
+        ArrayList<PreparedStatement> stms = new ArrayList<>();
+        try {
+            connection.setAutoCommit(false);
+            //UPDATE Session Record
+            String sql_update_session = "UPDATE Session SET status = 1 WHERE sessionid = ?";
+            PreparedStatement stm_update_session = connection.prepareStatement(sql_update_session);
+            stm_update_session.setInt(1, sessionid);
+            stm_update_session.executeUpdate();
+            stms.add(stm_update_session);
+
+            //PROCESS Attendace records
+            for (Attendance att : atts) {
+//                if (att.getId() == 0) //INSERT
+//                {
+//                    String sql_insert_att = "INSERT INTO [Attendance]\n"
+//                            + "           ([sid]\n"
+//                            + "           ,[sessionid]\n"
+//                            + "           ,[status]\n"
+//                            + "           ,[description])\n"
+//                            + "     VALUES\n"
+//                            + "           (?\n"
+//                            + "           ,?\n"
+//                            + "           ,?\n"
+//                            + "           ,?)";
+//                    PreparedStatement stm_insert_att = connection.prepareStatement(sql_insert_att);
+//                    stm_insert_att.setInt(1, att.getStudent().getId());
+//                    stm_insert_att.setInt(2, sessionid);
+//                    stm_insert_att.setBoolean(3, att.isStatus());
+//                    stm_insert_att.setString(4, att.getDescription());
+//                    stm_insert_att.executeUpdate();
+//                    stms.add(stm_insert_att);
+//
+//                } else //UPDATE
+//                {
+//                    String sql_update_att = "UPDATE Attendance SET status = ?,description = ? WHERE aid = ?";
+//                    PreparedStatement stm_update_att = connection.prepareStatement(sql_update_att);
+//                    stm_update_att.setBoolean(1, att.isStatus());
+//                    stm_update_att.setString(2, att.getDescription());
+//                    stm_update_att.setInt(3, att.getId());
+//                    stm_update_att.executeUpdate();
+//                    stms.add(stm_update_att);
+//                }
+            }
+
+            connection.commit();
+        } catch (SQLException ex) {
+
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (PreparedStatement stm : stms) {
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
 }

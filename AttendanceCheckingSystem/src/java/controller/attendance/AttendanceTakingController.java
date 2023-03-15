@@ -80,7 +80,7 @@ public class AttendanceTakingController extends BaseRequiredAuthenticatedControl
         ArrayList<Student> students = studentDb.getStudentsFromSession(sessionId);
         request.setAttribute("students", students);
 
-        request.getRequestDispatcher("view/attendance/takeAttendance.jsp").forward(request, response);
+        request.getRequestDispatcher("../view/instructor/attendance/takeAttendance.jsp").forward(request, response);
     }
 
     @Override
@@ -111,6 +111,7 @@ public class AttendanceTakingController extends BaseRequiredAuthenticatedControl
         //put them into array of Attendance objects --> pass this list into AttendanceDBContext (write function)
         AttendanceDBContext attendanceDb = new AttendanceDBContext();
         attendanceDb.insertMany(records, sessionId);
+        response.sendRedirect("sessionAttendance?sessionId=" + sessionId);
     }
 
-}
+} 
