@@ -1,4 +1,45 @@
-﻿
+﻿USE PRJ301_TakeAttendanceSystem
+-- USER TABLE
+INSERT INTO [User] (username, password, displayname) VALUES ('anhnh88', '123', N'Nguyễn Hoàng Anh');
+INSERT INTO [User] (username, password, displayname) VALUES ('duckm', '123', N'Khiếu Minh Đức');
+INSERT INTO [User] (username, password, displayname) VALUES ('giangpt', '123', N'Phạm Trường Giang');
+INSERT INTO [User] (username, password, displayname) VALUES ('huyenntk', '123', N'Nguyễn Thị Khánh Huyền');
+INSERT INTO [User] (username, password, displayname) VALUES ('phuonghm', '123', N'Hoàng Mai Phương');
+INSERT INTO [User] (username, password, displayname) VALUES ('sonnt5', '123', N'Ngô Tùng Sơn');
+
+-- ROLE TABLE
+INSERT INTO [Role] (roleId, roleName) VALUES ('1', 'Teacher');
+INSERT INTO [Role] (roleId, roleName) VALUES ('2', 'Student');
+
+
+-- FEATURE TABLE
+INSERT INTO Feature (featureId, featureName, featureUrl) VALUES ('1', 'View teacher timetable', '/instructor/weeklyTimetable');
+INSERT INTO Feature (featureId, featureName, featureUrl) VALUES ('2', 'View session report', '/instructor/sessionReport');
+INSERT INTO Feature (featureId, featureName, featureUrl) VALUES ('3', 'View group report', '/instructor/groupReport');
+INSERT INTO Feature (featureId, featureName, featureUrl) VALUES ('4', 'Take attendance', '/instructor/attendanceTaking');
+INSERT INTO Feature (featureId, featureName, featureUrl) VALUES ('5', 'View student timetable', '/student/weeklyTimetable');
+
+
+-- HASROLE TABLE
+INSERT INTO HasRole (userId, roleId) VALUES ('anhnh88', '1');
+INSERT INTO HasRole (userId, roleId) VALUES ('duckm', '2');
+INSERT INTO HasRole (userId, roleId) VALUES ('giangpt', '2');
+INSERT INTO HasRole (userId, roleId) VALUES ('huyenntk', '2');
+INSERT INTO HasRole (userId, roleId) VALUES ('phuonghm', '2');
+INSERT INTO HasRole (userId, roleId) VALUES ('sonnt5', '1');
+
+
+-- MAPROLEFEATURE TABLE
+INSERT INTO MapRoleFeature (roleId, featureId) VALUES ('1', '1');
+INSERT INTO MapRoleFeature (roleId, featureId) VALUES ('1', '2');
+INSERT INTO MapRoleFeature (roleId, featureId) VALUES ('1', '3');
+INSERT INTO MapRoleFeature (roleId, featureId) VALUES ('1', '4');
+INSERT INTO MapRoleFeature (roleId, featureId) VALUES ('2', '5');
+--INSERT INTO MapRoleFeature (roleId, featureId) VALUES ('2', '6');
+
+
+
+
 --	COURSE TABLE 
 INSERT INTO Course (courseId, courseName) VALUES ('VOV124', N'Vovinam 2');
 INSERT INTO Course (courseId, courseName) VALUES ('VOV134', N'Vovinam 3');
@@ -1480,6 +1521,7 @@ INSERT INTO Attend (studentId, status, sessionId, recordTime) VALUES ('HE176751'
 INSERT INTO Attend (studentId, status, sessionId, recordTime) VALUES ('SE03520', '1', '11', '21/02/2023 13:30:00 PM');
 INSERT INTO Attend (studentId, status, sessionId, recordTime) VALUES ('SE04495', '1', '11', '21/02/2023 13:30:00 PM');
 
+set dateformat dmy
 
 -- IOT102 Group 10
 SET DATEFORMAT dmy;
@@ -3465,4 +3507,3 @@ INSERT INTO Attend (studentId, status, sessionId, recordTime) VALUES ('HE176586'
 INSERT INTO Attend (studentId, status, sessionId, recordTime) VALUES ('HE176697', '0', '22', '11/2/2023  15:00:00 PM');
 INSERT INTO Attend (studentId, status, sessionId, recordTime) VALUES ('HE176751', '0', '22', '11/2/2023  15:00:00 PM');
 INSERT INTO Attend (studentId, status, sessionId, recordTime) VALUES ('HS160715', '0', '22', '11/2/2023  15:00:00 PM');
-

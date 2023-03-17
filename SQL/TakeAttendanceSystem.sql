@@ -25,6 +25,8 @@ CREATE TABLE Student
 	CONSTRAINT PK_Student PRIMARY KEY (studentId)
  )
 
+
+
  CREATE TABLE TimeSlot
  (
 	slotId int NOT NULL,
@@ -89,7 +91,12 @@ ALTER TABLE [Session] ADD status bit
 UPDATE [Session] SET [status] = 1
 UPDATE [Session] SET [status] = 0 WHERE date > '2023-03-13'
 
-select * from Session
+ALTER TABLE Attend ADD firstTaken int
+-- ALTER TABLE Attend DROP COLUMN firstTaken
+UPDATE Attend SET firstTaken = 1
+UPDATE Attend SET firstTaken = 1 where recordTime < '2023-03-14 00:00:00'
+UPDATE Attend SET firstTaken = 1 where sessionId in (122, 123, 124, 125)
+UPDATE Attend SET firstTaken = 1 where sessionId in (113, 114, 115)
 
 
 CREATE TABLE Attend
@@ -106,6 +113,57 @@ REFERENCES [Session] (sessionId)
 ALTER TABLE Attend ADD CONSTRAINT FK_Attend_Student FOREIGN KEY(studentId)
 REFERENCES Student (studentId)
 
+CREATE TABLE [User]
+(
+	username varchar(50) NOT NULL,
+	password varchar(50),
+	displayname nvarchar(50),
+	CONSTRAINT PK_User PRIMARY KEY (username)
+)
+
+CREATE TABLE Role
+(
+	roleId int NOT NULL,
+	roleName varchar(50),
+	CONSTRAINT PK_Role PRIMARY KEY (roleId)
+)
+
+
+CREATE TABLE Feature
+(
+	featureId int NOT NULL,
+	featureUrl varchar(50),
+	featureName varchar(50),
+	CONSTRAINT PK_Feature PRIMARY KEY (featureId)
+)
+
+
+CREATE TABLE HasRole
+(
+	userId varchar(50) NOT NULL,
+	roleId int NOT NULL,
+	CONSTRAINT PK_HasRole PRIMARY KEY (userId, roleId)
+)
+ALTER TABLE HasRole ADD CONSTRAINT FK_HasRole_User FOREIGN KEY (userId)
+REFERENCES [User] (username)
+ALTER TABLE HasRole ADD CONSTRAINT FK_HasRole_Role FOREIGN KEY (roleId)
+REFERENCES Role (roleId)
+
+
+CREATE TABLE MapRoleFeature
+(
+	roleId int NOT NULL,
+	featureId int NOT NULL,
+	CONSTRAINT PK_MapRoleFeature PRIMARY KEY (roleId, featureId)
+)
+ALTER TABLE MapRoleFeature ADD CONSTRAINT FK_MapRoleFeature_Role FOREIGN KEY (roleId)
+REFERENCES Role (roleId)
+ALTER TABLE MapRoleFeature ADD CONSTRAINT FK_MapRoleFeature_Feature FOREIGN KEY (featureId)
+REFERENCES Feature (featureId)
+
+
+
+
 /*
 DROP TABLE Attend
 DROP TABLE Participate
@@ -116,6 +174,12 @@ DROP TABLE Room
 DROP TABLE Instructor
 DROP TABLE TimeSlot
 DROP TABLE Course
+
+DROP TABLE MapRoleFeature
+DROP TABLE HasRole
+DROP TABLE Feature
+DROP TABLE Role
+DROP TABLE [User]
 */
 
 /*
@@ -129,6 +193,12 @@ SELECT * FROM TimeSlot
 SELECT * FROM Attend
 SELECT * FROM Course
 
+SELECT * FROM [User]
+SELECT * FROM Role
+SELECT * FROM Feature
+SELECT * FROM HasRole
+role
+
 --	Thứ tự xóa bảng 
 DELETE FROM Attend
 DELETE FROM Participate
@@ -139,6 +209,12 @@ DELETE FROM Room
 DELETE FROM Instructor
 DELETE FROM TimeSlot
 DELETE FROM Course
+
+DELETE FROM MapRoleFeature
+DELETE FROM HasRole
+DELETE FROM [Feature]
+DELETE FROM [Role]
+DELETE FROM [User]
 */
 
 

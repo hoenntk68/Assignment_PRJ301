@@ -236,32 +236,101 @@ end
 -- drop proc getAbsentCount
 -- exec getAbsentCount 15
 
-select g.courseId, s.studentId, sum(1 - CAST(status as int)) as absentCount
-	from Student s left join Attend a on s.studentId = a.studentId
-	left join Session ses on a.sessionId = ses.sessionId
-	left join [Group] g on ses.groupId = g.groupId
-	where ses.groupId = 12  
-	group by s.studentId, g.courseId
+/*
+---------------------------------GET POSSIBLE URLS FROM USERID---------------------------------
+*/
+go 
+create proc getUserPossibleUrls
+@userId varchar(50),
+@url varchar(50)
+as
+begin
+	select u.username, hr.roleId, r.roleName, f.featureId, f.featureName, f.featureUrl
+	from [User] u join HasRole hr on u.username = hr.userId
+	join Role r on hr.roleId = r.roleId
+	join MapRoleFeature mrf on hr.roleId = mrf.roleId
+	join Feature f on mrf.featureId = f.featureId
+	--group by u.username, hr.roleId, r.roleName, f.featureId, f.featureName, f.featureUrl
+	where u.username = @userId and f.featureUrl = @url
+end
 
-select * from [Group] where groupId = 12
+-- drop proc getUserPossibleUrls
+-- exec getUserPossibleUrls 'sonnt5', '/instructor/weeklyTimetable'
+
+
+/*
+---------------------------------GET ATTENDANCE BY SESSION ID---------------------------------
+
+---------------------------------SET STATUS TO 0 AND COMMENT TO EMPTY STRING---------------------------------
+*/
+go 
+create proc getAttendanceBySessionId
+@sessionId int
+as
+begin
+	SELECT 
+		stu.studentId, 
+		stu.studentName, 
+		ISNULL(a.status, 0) as status, 
+		ISNULL(a.comment, '') as comment,
+		ISNULL(a.firstTaken, 0) as firstTaken
+	FROM Student stu 
+		JOIN [Participate] p on stu.studentId = p.studentId
+		JOIN [Group] g on g.groupId = p.groupId
+		JOIN [Session] ses on ses.groupId = g.groupId
+		LEFT JOIN Attend a on a.studentId = stu.studentId AND a.sessionId = ses.sessionId
+	WHERE ses.sessionId = @sessionId
+end
+
+-- drop proc getAttendanceBySessionId
+-- exec getAttendanceBySessionId 12
+
+
+/*
+---------------------------------GET WEEKLY TIMETABLE FOR GIVEN STUDENT ID---------------------------------
+*/
+
+go
+create proc getStudentTimetable
+@studentId varchar(8),
+@startWeek date
+as
+begin
+	select 
+		stu.studentId, stu.studentName,
+		g.groupId, g.groupName, g.courseId, g.instructorId, 
+		ses.sessionId, ses.date, ses.slotId, ses.status as sessionStatus,
+		ts.slotNumber, ts.startTime, ts.endTime,
+		r.roomId,
+		ISNULL(a.status, 0) as attendStatus, ISNULL(a.firstTaken, 0) as firstTaken
+	from Student stu
+		join Participate p on stu.studentId = p.studentId
+		join [Group] g on p.groupId = g.groupId
+		join Session ses on ses.groupId = g.groupId
+		join Room r on ses.roomId = r.roomId
+		join TimeSlot ts on ses.slotId = ts.slotId
+		left join Attend a on a.studentId = stu.studentId and a.sessionId = ses.sessionId
+	where
+		stu.studentId = @studentId
+		and ses.date between @startWeek and DATEADD(day, 6, @startWeek)
+end
+
+-- drop proc getStudentTimetable
+-- exec getStudentTimetable 'HE170863', '2023-3-13'
+
 
 select 
-g.groupId, g.groupName, g.courseId, c.courseName, g.instructorId, i.instructorName
-from [Group] g
-join Course c on g.courseId = c.courseId
-join Instructor i on g.instructorId = i.instructorId
+	stu.studentId, stu.studentName, stu.studentImage, 
+	g.groupId, g.groupName, g.courseId, g.instructorId
+	ses.sessionId, ses.date, 
+from Student stu
+	join Participate p on stu.studentId = p.studentId
+	join [Group] g on p.groupId = g.groupId
+	join Session ses on ses.groupId = g.groupId
+	join TimeSlot ts on 
+	left join Attend a on stu.studentId = a.studentId and a.sessionId = ses.sessionId
+where  
+	stu.studentId = 'HE170863'
+	and ses.date between @startWeek and DATEADD(day, 6, @startWeek)
 
 
-select * from Attend where studentId = 'HE170863'
-select * from Attend where studentId = 'HE150057'
-select * from Attend where sessionId = 12
-
---delete from Attend where sessionId = 12
-
-insert into Attend(studentId, sessionId, status, recordTime, comment) values 
-('HE170863', 12, 1, '2023-3-14 05:00:00', null), 
-('HE150057', 12, 1, '2023-3-14 05:00:00', null)
-
-insert into Attend(studentId, sessionId, status, recordTime, comment) values 
-('HE170863', 12, 1, '2023-03-14 02:58:28', 'cong chua hiphop'),
-('HE150057', 12, 1, '2023-03-14 02:58:28', 'hoang tu hiphop')
