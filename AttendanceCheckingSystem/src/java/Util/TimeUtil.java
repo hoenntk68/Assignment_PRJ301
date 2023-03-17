@@ -36,7 +36,7 @@ public class TimeUtil {
         int num[] = getTimeNumbers(date);
         calendar.set(num[0], num[1], num[2]);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        System.out.println("Day is: " + dayOfWeek);
+//        System.out.println("Day is: " + dayOfWeek);
         int daysUntilMonday = (dayOfWeek - Calendar.MONDAY + 7) % 7;
         calendar.add(Calendar.DAY_OF_YEAR, -daysUntilMonday);
         String monString = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DATE);

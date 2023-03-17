@@ -36,7 +36,7 @@ public class UserDBContext extends DBContext<User> {
             if (rs.next()) {
                 return true;
             } else {
-                System.out.println("st wrong");
+                System.out.println("st wrong - msg from UserDBContext class");
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);

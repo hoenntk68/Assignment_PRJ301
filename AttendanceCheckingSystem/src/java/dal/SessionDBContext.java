@@ -113,6 +113,8 @@ public class SessionDBContext extends DBContext<Session> {
     public ArrayList<Session> all() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    
 
     public ArrayList<Session> getWeeklyTimetable(String monday, String instructorId) {
         ArrayList<Session> sessions = new ArrayList<>();

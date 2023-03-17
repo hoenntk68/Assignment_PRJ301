@@ -22,6 +22,7 @@ import model.User;
 public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
 
     private boolean isAuthenticated(HttpServletRequest request) {
+        System.out.println("User is: " + request.getSession().getAttribute("user"));
         return request.getSession().getAttribute("user") != null;
     }
 
@@ -51,21 +52,16 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
         if (isAuthenticated(request)) {
-//            String servletPath = request.getServletPath();
-//            User user = (User) request.getSession().getAttribute("user");
-//            String userId = user.getUsername();
-//            System.out.println("URL is " + servletPath);
-//            System.out.println("Username is: " + userId);
             boolean isAuthorized = new UserDBContext().isAuthorized(request);
             if (isAuthorized) {
-//                response.getWriter().print("<h1>Authorization successful!<h1>");
                 doGet(request, response, (User) request.getSession().getAttribute("user"));
             } else {
+                response.sendRedirect("../view/authentication/accessDenied.jsp"); 
                 response.getWriter().print("<h1>Authorization failed!<h1>");
             }
         } else {
-//            response.getWriter().println("access denied!");
             response.sendRedirect("../login");
         }
     }

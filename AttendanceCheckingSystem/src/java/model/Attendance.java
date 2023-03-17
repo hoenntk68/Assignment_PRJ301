@@ -17,6 +17,15 @@ public class Attendance {
     private boolean status;
     private Time recordTime;
     private String comment;
+    private int firstTaken;
+
+    public int getFirstTaken() {
+        return firstTaken;
+    }
+
+    public void setFirstTaken(int firstTaken) {
+        this.firstTaken = firstTaken;
+    }
 
     public Student getStudent() {
         return student;

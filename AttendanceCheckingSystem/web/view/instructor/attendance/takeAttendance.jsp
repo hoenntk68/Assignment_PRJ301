@@ -122,7 +122,8 @@
     </head>
     <body>
         <c:set var="session" value="${requestScope.session}"></c:set>
-        <h1>${noOfStudent} students found</h1>
+        <c:set value="${requestScope.isEditable}" var="isEditable"></c:set>
+        <!--<h1>${noOfStudent} students found</h1>-->
         <!--<h1>Attendance record of ${session.group.name}</h1>-->
         <h3>Lecturer: ${session.instructor.id}</h3>
         <h3>Subject: ${session.group.course.id}</h3>
@@ -134,8 +135,8 @@
         </h3>
 
         <form method="post" action="attendanceTaking?sessionId=${session.id}">
-            <input type="hidden" value="${requestScope.session}"/>
-            <input type="hidden" name="noOfStudent" value="${requestScope.students.size()}"/>
+            <input type="hidden" value="${requestScope.session}" name="session"/>
+            <!--<input type="hidden" name="noOfStudent" value="${requestScope.students.size()}"/>-->
             <table>
                 <tr class="table-head">
                     <td>No</td>
@@ -146,31 +147,69 @@
                     <td>Status</td>
                     <td>Comment</td>
                 </tr>
-                <c:forEach items="${requestScope.students}" var="student" varStatus="iStudent">
+                <c:forEach items="${requestScope.attendances}" var="attendance" varStatus="iAttendance">
                     <tr>
-                        <td>${iStudent.index + 1}</td>
+                        <td>${iAttendance.index + 1}</td>
                         <td>${session.group.name}</td>
-                        <td>${student.id}</td>
-                        <td>${student.name}</td>
+                        <td>${attendance.student.id}
+                            <input type="hidden" name="studentId" value="${attendance.student.id}" />
+                            <!--<input type="hidden" name="aid${a.student.id}" value="${a.id}" />-->
+                        </td>
+                        <td>${attendance.student.name}</td>
                         <td>
                             <img src="https://i0.wp.com/www.mnleadership.org/wp-content/uploads/2017/02/Anonymous-Avatar.png?ssl=1" alt="${record.student.id}"/>
                         </td>
                         <td>
-                            <input type="hidden" value="${student.id}" name="student${iStudent.index}"/>
+                            <!--<input type="hidden" value="${attendance.student.id}" name="student${iAttendance.index}"/>-->
 
-                            <input type="radio" class="attend" name="status${iStudent.index}" value="true"/>
-                            <label class="attend">Present</label>
+                            <input 
+                                id="${iAttendance.index}true"
+                                type="radio" 
+                                class="attend" 
+                                name="status${attendance.student.id}" 
+                                value="true"
+                                <c:if test="${attendance.status}">
+                                    checked="checked"
+                                </c:if>
+                                <c:if test="${!isEditable}">
+                                    disabled
+                                </c:if>
+                                />
+                            <label class="attend" for="${iAttendance.index}true">Present</label>
                             <br/>
-                            <input type="radio" class="absent" name="status${iStudent.index}" value="false"/>
-                            <label class="absent">Absent</label>
+                            <input 
+                                id="${iAttendance.index}false"
+                                type="radio" 
+                                class="absent" 
+                                name="status${attendance.student.id}" 
+                                value="false"
+                                <c:if test="${!attendance.status}">
+                                    checked="checked"
+                                </c:if>
+                                <c:if test="${!isEditable}">
+                                    disabled="disabled"
+                                </c:if>
+                                />
+                            <label class="absent" for="${iAttendance.index}false">Absent</label>
                         </td>
                         <td>
-                            <input name="comment${iStudent.index}" placeholder="Write your comment here..."/>
+                            <input 
+                                name="comment${attendance.student.id}" 
+                                placeholder="Write your comment here..."
+                                value="${attendance.comment}"
+                                <c:if test="${!isEditable}">
+                                    disabled="disabled"
+                                </c:if>
+                                />
                         </td>
+                    <input type="hidden" name ="firstTaken${attendance.student.id}" value="${attendance.firstTaken}"/>
                     </tr>
                 </c:forEach>
             </table>
-            <input id="submitAttendance" type="submit" value="Save Attendance">
+            <input type="hidden" name="sessionId" value="${session.id}"/>
+            <c:if test="${isEditable}">
+                <input id="submitAttendance" type="submit" value="Save Attendance">
+            </c:if>
         </form>
     </body>
 </html>

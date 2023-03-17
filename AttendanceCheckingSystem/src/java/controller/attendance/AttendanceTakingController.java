@@ -17,6 +17,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Attendance;
 import model.Session;
@@ -75,43 +77,53 @@ public class AttendanceTakingController extends BaseRequiredAuthenticatedControl
         Session session = sessionDb.get(sessionId);
         request.setAttribute("session", session);
 
+        //check editable
+        LocalDate today = LocalDate.now();
+        boolean isEditable = session.getDate().compareTo(Date.valueOf(today)) == 0;
+        request.setAttribute("isEditable", isEditable);
+
         //get students of the session
-        StudentDBContext studentDb = new StudentDBContext();
-        ArrayList<Student> students = studentDb.getStudentsFromSession(sessionId);
-        request.setAttribute("students", students);
+        AttendanceDBContext db = new AttendanceDBContext();
+        ArrayList<Attendance> attendances = db.getAttendanceBySessionId(sessionId);
+        request.setAttribute("attendances", attendances);
 
         request.getRequestDispatcher("../view/instructor/attendance/takeAttendance.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
-//get session info (id)     
+        //get session info (id)     
         int sessionId = Integer.parseInt(request.getParameter("sessionId"));
-        int noOfStudent = Integer.parseInt(request.getParameter("noOfStudent"));
+//        int noOfStudent = Integer.parseInt(request.getParameter("noOfStudent"));
         SessionDBContext sessionDb = new SessionDBContext();
         Session session = sessionDb.get(sessionId);
-//        request.setAttribute("session", session);
+        //request.setAttribute("session", session);
+
+        String[] studentIds = request.getParameterValues("studentId");
 
         ArrayList<Attendance> records = new ArrayList<>();
-        for (int i = 0; i < noOfStudent; i++) {
+        for (String studentId : studentIds) {
             Attendance attendance = new Attendance();
             Student student = new Student();
-            student.setId(request.getParameter("student" + i));
+            student.setId(studentId);
             attendance.setStudent(student);
             attendance.setSession(session);
-            attendance.setComment(request.getParameter("comment" + i));
-            String statusCheck = request.getParameter("status" + i);
-            if (statusCheck != null) {
-                System.out.println("Status check is " + statusCheck);
-                attendance.setStatus(Boolean.parseBoolean(statusCheck));
-                records.add(attendance);
-            }
+            attendance.setComment(request.getParameter("comment" + studentId));
+            attendance.setStatus(request.getParameter("status" + studentId).equals("true"));
+            int firstTaken = Integer.parseInt(request.getParameter("firstTaken" + studentId));
+            attendance.setFirstTaken(firstTaken);
+//            String statusCheck = request.getParameter("status" + studentId);
+//            if (statusCheck != null) {
+//                System.out.println("Status check is " + statusCheck);
+//                attendance.setStatus(Boolean.parseBoolean(statusCheck));
+//                records.add(attendance);
+//            }
 
+            records.add(attendance);
         }
-        //put them into array of Attendance objects --> pass this list into AttendanceDBContext (write function)
         AttendanceDBContext attendanceDb = new AttendanceDBContext();
-        attendanceDb.insertMany(records, sessionId);
-        response.sendRedirect("sessionAttendance?sessionId=" + sessionId);
+        attendanceDb.updateAtts(records, sessionId);
+        response.sendRedirect("weeklyTimetable?date=");
     }
 
-} 
+}

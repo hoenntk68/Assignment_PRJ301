@@ -4,6 +4,7 @@
     Author     : Hp
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -71,11 +72,22 @@
                 color: #ff0000;
                 margin-bottom: 10px;
             }
+
+            .error-message {
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+                border-radius: 5px;
+                color: #721c24;
+                padding: 5px 10px;
+                margin-bottom: 10px;
+                box-shadow: 5px 5px #f5c6cb;
+            }
+
         </style>
     </head>
     <body>
         <h1 style="margin-top: 50px;">FPT Attendance System</h1>
-        
+
         <div class="container">
             <h1>Login</h1>
             <form action="login" method="post">
@@ -84,6 +96,12 @@
 
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
+
+                <c:if test="${requestScope.loginFailed}">
+                    <div class="error-message">
+                        <p>Incorrect username or password. Please try again.</p>
+                    </div>
+                </c:if>
 
                 <button type="submit">Login</button>
             </form>

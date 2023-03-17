@@ -51,11 +51,11 @@ public class LoginController extends HttpServlet {
         User user = db.get(username, password);
         if (user != null) {
             request.getSession().setAttribute("user", user);
-//            response.getWriter().println("login successful!");
             response.sendRedirect("index.html");
         } else {
-            response.getWriter().println("login failed!");
-            
+            boolean loginFailed = true; 
+            request.setAttribute("loginFailed", loginFailed);
+            request.getRequestDispatcher("view/authentication/login.jsp").forward(request, response);
 //            response.sendRedirect("login");
         }
     }

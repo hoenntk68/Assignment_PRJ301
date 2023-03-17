@@ -1,6 +1,6 @@
 <%-- 
-    Document   : schedule
-    Created on : Mar 3, 2023, 5:20:13 PM
+    Document   : studentTimetable.jsp
+    Created on : Mar 17, 2023, 11:35:45 PM
     Author     : Hp
 --%>
 
@@ -67,20 +67,20 @@
             input[type="submit"]:hover{
                 transform: scaleX(1.05);
             }
-            
+
             p{
                 margin: 3px;
             }
-            
+
             .attended{
                 color: green;
                 margin: 1px
             }
-            
-            .not-yet{
+
+            .not-yet, .absent{
                 color: red;
             }
-            
+
             .take-attend{
                 text-decoration: none;
                 background-color: #FFA500;
@@ -90,24 +90,24 @@
         </style>
     </head>
     <body>
-        <h1 style="text-align: center">
-            Weekly Timetable
-        </h1>
-        <h1 style="text-align: center">
-        </h1>
-        <br/>
-        <div style="text-align: center; margin-bottom: 10px">
-            <c:set var="user" value="${requestScope.user}"></c:set>
-            Lecturer: <input type="text" value="${user.username}" disabled="disabled"/>
+        <c:set var="user" value="${requestScope.user}"></c:set>
+        <c:set var="currentDate" value="${requestScope.date}"></c:set>
+            <h1 style="text-align: center">
+                Weekly Timetable
+            </h1>
+            <h1 style="text-align: center">
+            </h1>
+            <br/>
+            <div style="text-align: center; margin-bottom: 10px">
+                Lecturer: <input type="text" value="${user.username}" disabled="disabled"/>
         </div>
 
-            
+
         <table>
             <tr class="table-head">
                 <td>
-                    <c:set var="currentDate" value="${requestScope.date}"></c:set>
-                        <form action="weeklyTimetable">
-                            <input type="date" name="date" value="${requestScope.date}"/>
+                    <form action="weeklyTimetable">
+                        <input type="date" name="date" value="${currentDate}"/>
                         <br/>
                         <input type="submit" value="View schedule"/>
                     </form>
@@ -125,31 +125,32 @@
                     <td style="padding-left: 10px">Slot ${slot}</td>
                     <c:forEach var="day" begin="2" end="8" varStatus="dayStatus">
                         <td style="padding: 0 10px">
-                            <c:forEach items="${requestScope.sessions}" var="session">
-                                <c:if test="${session.getDayOfWeek() % 8 eq dayStatus.index && session.timeslot.number eq slotStatus.index}">
-                                    <p style="font-weight: bold; display: inline-block">${session.group.course.id} at ${session.room.id}</p>
+                            <c:forEach items="${requestScope.attendances}" var="attendance">
+                                <c:if test="${attendance.session.getDayOfWeek() % 8 eq dayStatus.index && attendance.session.timeslot.number eq slotStatus.index}">
+                                    <p style="font-weight: bold; display: inline-block">${attendance.session.group.course.id} at ${attendance.session.room.id}</p>
                                     <p
-                                        <c:if test="${session.status}">
+                                        <c:if test="${attendance.status}">
                                             class="attended"
                                         </c:if>
-                                        <c:if test="${!session.status}">
+                                        <c:if test="${!attendance.status && attendance.firstTaken == 0}">
                                             class="not-yet"
+                                        </c:if>
+                                        <c:if test="${!attendance.status && attendance.firstTaken != 0}">
+                                            class="absent"
                                         </c:if>
                                         >
                                         <c:if test="${session.status && requestScope.today != session.date}">
                                             (Attended)
-                                            <a class="slot take-attend" href="sessionAttendance?sessionId=${session.id}">View attendance</a>
                                         </c:if>
-                                        <c:if test="${!session.status}">
+                                        <c:if test="${!attendance.status && attendance.firstTaken == 0}">
                                             (Not yet)
                                         </c:if>
-                                        <c:if test="${requestScope.today == session.date}">
-                                            <br/>
-                                            <a class="slot take-attend" href="attendanceTaking?sessionId=${session.id}">Take attendance</a>
+                                        <c:if test="${!attendance.status && attendance.firstTaken != 0}">
+                                            (Absent)
                                         </c:if>
                                     </p>
-                                    <p class="slot group">${session.group.name}</p>
-                                    <p class="slot"><fmt:formatDate type="time" pattern="HH:mm" value="${session.timeslot.startTime}"/> - <fmt:formatDate type="time" pattern="HH:mm" value="${session.timeslot.endTime}"/></p>
+                                    <!--<p class="slot group">${attendance.session.group.name}</p>-->
+                                    <p class="slot"><fmt:formatDate type="time" pattern="HH:mm" value="${attendance.session.timeslot.startTime}"/> - <fmt:formatDate type="time" pattern="HH:mm" value="${attendance.session.timeslot.endTime}"/></p>
                                 </c:if> 
                             </c:forEach>
 

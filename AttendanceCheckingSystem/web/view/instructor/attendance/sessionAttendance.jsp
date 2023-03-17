@@ -184,15 +184,31 @@
                                 </c:if>
                             </td>-->
                                 <td>
-                                    <input type="hidden" value="${record.student.id}" name="student${iRecord.index}"/>
-                                    <input type="radio" value="present" class="attend" name="status${iRecord.index}" value="attended"
+                                    <input 
+                                        type="hidden" 
+                                        value="${record.student.id}" 
+                                        name="student${iRecord.index}"
+                                        />
+                                    <input 
+                                        type="radio" 
+                                        value="present" 
+                                        class="attend" 
+                                        name="status${iRecord.index}" 
+                                        value="attended"
+                                        disabled="disabled"
                                            <c:if test="${record.status}">
                                                checked="checked"
                                            </c:if>
                                            />
                                     <label class="attend">Present</label>
                                     <br/>
-                                    <input type="radio" value="absent" class="absent" name="status${iRecord.index}" value="absent"
+                                    <input 
+                                        type="radio" 
+                                        value="absent" 
+                                        class="absent" 
+                                        name="status${iRecord.index}" 
+                                        value="absent"
+                                        disabled="disabled"
                                            <c:if test="${!record.status}">
                                                checked="checked"
                                            </c:if>
@@ -207,9 +223,7 @@
                             </tr>
                         </c:forEach>
                     </table>
-                    <c:if test="${!requestScope.editable}">
-                        <input id="submitAttendance" type="submit" value="Save Attendance">
-                    </c:if>
+                    <!--<input id="submitAttendance" type="submit" value="Save Attendance">-->
                 </form>
             </c:otherwise>
         </c:choose>

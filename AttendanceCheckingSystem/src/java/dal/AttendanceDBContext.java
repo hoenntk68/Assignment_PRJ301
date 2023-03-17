@@ -52,6 +52,89 @@ public class AttendanceDBContext extends DBContext<Attendance> {
     public ArrayList<Attendance> all() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    public ArrayList<Attendance> getStudentTimetable(String studentId, String monday) { 
+        ArrayList<Attendance> records = new ArrayList<>(); 
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getStudentTimetable ?, ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, studentId);
+            stm.setString(2, monday);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance record = new Attendance();
+                
+                Session session = new Session();
+                session.setId(rs.getInt("sessionId"));
+                session.setStatus(rs.getBoolean("sessionStatus"));
+
+                Room room = new Room();
+                room.setId(rs.getString("roomId"));
+                session.setRoom(room);
+
+                Instructor instructor = new Instructor();
+                instructor.setId(rs.getString("instructorId"));
+                session.setInstructor(instructor);
+
+                TimeSlot slot = new TimeSlot();
+                slot.setNumber(rs.getInt("slotNumber"));
+                slot.setStartTime(rs.getTime("startTime"));
+                slot.setEndTime(rs.getTime("endTime"));
+                session.setTimeslot(slot);
+
+                Course course = new Course();
+                course.setId(rs.getString("courseId"));
+
+                Group group = new Group();
+                group.setName(rs.getString("groupName"));
+                group.setCourse(course);
+                session.setGroup(group);
+
+                Date sqlDate = rs.getDate("date");
+                session.setDate(sqlDate);
+                
+                Student student = new Student();
+                student.setId(studentId);
+                
+                record.setStudent(student);
+                record.setSession(session);
+                record.setStatus(rs.getBoolean("attendStatus")); 
+                record.setFirstTaken(rs.getInt("firstTaken"));
+                
+                records.add(record);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return records;
+    }
 
     public ArrayList<Attendance> getGroupReport(int groupId) {
         ArrayList<Attendance> records = new ArrayList<>();
@@ -254,79 +337,44 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         }
     }
 
-    public static void main(String[] args) {
-        AttendanceDBContext attendDb = new AttendanceDBContext();
-        ArrayList<Attendance> records = new ArrayList<>();
-
-        Attendance a1 = new Attendance();
-        Student stu1 = new Student();
-        stu1.setId("HE170863");
-        a1.setStudent(stu1);
-        Session ses1 = new Session();
-        ses1.setId(12);
-        a1.setSession(ses1);
-        a1.setComment("cong chua hiphop");
-        a1.setStatus(true);
-
-        Attendance a2 = new Attendance();
-        Student stu2 = new Student();
-        stu2.setId("HE150057");
-        a2.setStudent(stu2);
-        Session ses2 = new Session();
-        ses2.setId(12);
-        a2.setSession(ses2);
-        a2.setComment("hoang tu hiphop");
-        a2.setStatus(true);
-
-        records.add(a1);
-        records.add(a2);
-
-        attendDb.insertMany(records, 12);
-    }
-
-    public void updateAtts(ArrayList<Attendance> atts, int sessionid) {
-        ArrayList<PreparedStatement> stms = new ArrayList<>();
+    public void updateAtts(ArrayList<Attendance> attendances, int sessionId) {
+        ArrayList<PreparedStatement> statements = new ArrayList<>();
         try {
             connection.setAutoCommit(false);
             //UPDATE Session Record
-            String sql_update_session = "UPDATE Session SET status = 1 WHERE sessionid = ?";
-            PreparedStatement stm_update_session = connection.prepareStatement(sql_update_session);
-            stm_update_session.setInt(1, sessionid);
-            stm_update_session.executeUpdate();
-            stms.add(stm_update_session);
+            String sql_update_session = "UPDATE Session SET status = 1 WHERE sessionId = ?";
+            PreparedStatement updateSessionStm = connection.prepareStatement(sql_update_session);
+            updateSessionStm.setInt(1, sessionId);
+            updateSessionStm.executeUpdate();
+            statements.add(updateSessionStm);
 
             //PROCESS Attendace records
-            for (Attendance att : atts) {
-//                if (att.getId() == 0) //INSERT
-//                {
-//                    String sql_insert_att = "INSERT INTO [Attendance]\n"
-//                            + "           ([sid]\n"
-//                            + "           ,[sessionid]\n"
-//                            + "           ,[status]\n"
-//                            + "           ,[description])\n"
-//                            + "     VALUES\n"
-//                            + "           (?\n"
-//                            + "           ,?\n"
-//                            + "           ,?\n"
-//                            + "           ,?)";
-//                    PreparedStatement stm_insert_att = connection.prepareStatement(sql_insert_att);
-//                    stm_insert_att.setInt(1, att.getStudent().getId());
-//                    stm_insert_att.setInt(2, sessionid);
-//                    stm_insert_att.setBoolean(3, att.isStatus());
-//                    stm_insert_att.setString(4, att.getDescription());
-//                    stm_insert_att.executeUpdate();
-//                    stms.add(stm_insert_att);
-//
-//                } else //UPDATE
-//                {
-//                    String sql_update_att = "UPDATE Attendance SET status = ?,description = ? WHERE aid = ?";
-//                    PreparedStatement stm_update_att = connection.prepareStatement(sql_update_att);
-//                    stm_update_att.setBoolean(1, att.isStatus());
-//                    stm_update_att.setString(2, att.getDescription());
-//                    stm_update_att.setInt(3, att.getId());
-//                    stm_update_att.executeUpdate();
-//                    stms.add(stm_update_att);
-//                }
+            for (Attendance attendance : attendances) {
+                if (attendance.getFirstTaken() == 0) //INSERT
+                {
+                    String sqlInsertAttendance = "INSERT INTO Attend\n"
+                            + "(studentId, sessionId, status, comment, firstTaken) \n"
+                            + "VALUES (?, ?, ?, ?, ?)";
+                    PreparedStatement insertStm = connection.prepareStatement(sqlInsertAttendance);
+                    insertStm.setString(1, attendance.getStudent().getId());
+                    insertStm.setInt(2, sessionId);
+                    insertStm.setBoolean(3, attendance.isStatus());
+                    insertStm.setString(4, attendance.getComment());
+                    insertStm.setInt(5, 1);
+                    insertStm.executeUpdate();
+                    statements.add(insertStm);
+
+                } else //UPDATE
+                {
+                    String sqlUpdateAttendance = "UPDATE Attend SET status = ?, comment = ? WHERE studentId = ? and sessionId = ?";
+                    PreparedStatement updateStm = connection.prepareStatement(sqlUpdateAttendance);
+                    updateStm.setBoolean(1, attendance.isStatus());
+                    updateStm.setString(2, attendance.getComment());
+                    updateStm.setString(3, attendance.getStudent().getId());
+                    updateStm.setInt(4, sessionId);
+                    updateStm.executeUpdate();
+                    statements.add(updateStm);
+                }
             }
 
             connection.commit();
@@ -344,7 +392,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             } catch (SQLException ex) {
                 Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
-            for (PreparedStatement stm : stms) {
+            for (PreparedStatement stm : statements) {
                 try {
                     stm.close();
                 } catch (SQLException ex) {
@@ -360,4 +408,76 @@ public class AttendanceDBContext extends DBContext<Attendance> {
 
     }
 
+    public ArrayList<Attendance> getAttendanceBySessionId(int sessionId) {
+        ArrayList<Attendance> attendances = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            String sql = "exec getAttendanceBySessionId ?";
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, sessionId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance attendance = new Attendance();
+                attendance.setStatus(rs.getBoolean("status"));
+                attendance.setComment(rs.getString("comment"));
+                attendance.setFirstTaken(rs.getInt("firstTaken"));
+                Student student = new Student();
+                student.setId(rs.getString("studentId"));
+                student.setName(rs.getString("studentName"));
+                attendance.setStudent(student);
+                attendances.add(attendance);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return attendances;
+    }
+
+    public static void main(String[] args) {
+//        AttendanceDBContext attendDb = new AttendanceDBContext();
+//        ArrayList<Attendance> records = new ArrayList<>();
+//
+//        Attendance a1 = new Attendance();
+//        Student stu1 = new Student();
+//        stu1.setId("HE170863");
+//        a1.setStudent(stu1);
+//        Session ses1 = new Session();
+//        ses1.setId(12);
+//        a1.setSession(ses1);
+//        a1.setComment("cong chua hiphop");
+//        a1.setStatus(true);
+//
+//        Attendance a2 = new Attendance();
+//        Student stu2 = new Student();
+//        stu2.setId("HE150057");
+//        a2.setStudent(stu2);
+//        Session ses2 = new Session();
+//        ses2.setId(12);
+//        a2.setSession(ses2);
+//        a2.setComment("hoang tu hiphop");
+//        a2.setStatus(true);
+//
+//        records.add(a1);
+//        records.add(a2);
+//
+//        attendDb.insertMany(records, 12);
+    }
 }
