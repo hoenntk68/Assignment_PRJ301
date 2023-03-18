@@ -31,6 +31,7 @@ public class StudentTimetableController extends BaseRequiredAuthenticatedControl
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
+        
         String date = request.getParameter("date");
         if (date.length() == 0 || date == null) {
             Calendar cal = Calendar.getInstance();
@@ -46,6 +47,7 @@ public class StudentTimetableController extends BaseRequiredAuthenticatedControl
 
         AttendanceDBContext sessionDb = new AttendanceDBContext();
         ArrayList<Attendance> attendances = sessionDb.getStudentTimetable(user.getUsername(), monday);
+        
 
         request.setAttribute("today", today);
         request.setAttribute("dates", dates);

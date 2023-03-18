@@ -52,9 +52,9 @@ public class AttendanceDBContext extends DBContext<Attendance> {
     public ArrayList<Attendance> all() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    public ArrayList<Attendance> getStudentTimetable(String studentId, String monday) { 
-        ArrayList<Attendance> records = new ArrayList<>(); 
+
+    public ArrayList<Attendance> getStudentTimetable(String studentId, String monday) {
+        ArrayList<Attendance> records = new ArrayList<>();
         PreparedStatement stm = null;
         ResultSet rs = null;
         String sql = "exec getStudentTimetable ?, ?";
@@ -65,7 +65,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             rs = stm.executeQuery();
             while (rs.next()) {
                 Attendance record = new Attendance();
-                
+
                 Session session = new Session();
                 session.setId(rs.getInt("sessionId"));
                 session.setStatus(rs.getBoolean("sessionStatus"));
@@ -94,15 +94,15 @@ public class AttendanceDBContext extends DBContext<Attendance> {
 
                 Date sqlDate = rs.getDate("date");
                 session.setDate(sqlDate);
-                
+
                 Student student = new Student();
                 student.setId(studentId);
-                
+
                 record.setStudent(student);
                 record.setSession(session);
-                record.setStatus(rs.getBoolean("attendStatus")); 
+                record.setStatus(rs.getBoolean("attendStatus"));
                 record.setFirstTaken(rs.getInt("firstTaken"));
-                
+
                 records.add(record);
 
             }
@@ -451,33 +451,79 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         return attendances;
     }
 
+    public ArrayList<Attendance> getStudentReport(String studentId, int groupId) {
+        ArrayList<Attendance> records = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            String sql = "exec getCourseReportForStudent ?, ?";
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, studentId);
+            stm.setInt(2, groupId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance attendance = new Attendance();
+                
+                attendance.setStatus(rs.getBoolean("attendStatus"));
+                attendance.setComment(rs.getString("comment"));
+                attendance.setFirstTaken(rs.getInt("firstTaken"));
+                
+                Session session = new Session();
+                session.setDate(rs.getDate("date"));
+                
+                Room room = new Room();
+                room.setId(rs.getString("roomId"));
+                session.setRoom(room);
+                
+                Instructor instructor = new Instructor();
+                instructor.setId(rs.getString("lecturerId"));
+                session.setInstructor(instructor);
+                
+                TimeSlot timeSlot = new TimeSlot();
+                timeSlot.setNumber(rs.getInt("slotNumber"));
+                timeSlot.setStartTime(rs.getTime("startTime"));
+                timeSlot.setEndTime(rs.getTime("endTime"));
+                session.setTimeslot(timeSlot);
+                
+                Group group = new Group();
+                group.setId(groupId);
+                group.setName(rs.getString("groupName"));
+                session.setGroup(group);
+                
+                Student student = new Student();
+                student.setId(studentId);
+                attendance.setStudent(student);
+                attendance.setSession(session);
+                records.add(attendance);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return records;
+
+    }
+
     public static void main(String[] args) {
-//        AttendanceDBContext attendDb = new AttendanceDBContext();
-//        ArrayList<Attendance> records = new ArrayList<>();
-//
-//        Attendance a1 = new Attendance();
-//        Student stu1 = new Student();
-//        stu1.setId("HE170863");
-//        a1.setStudent(stu1);
-//        Session ses1 = new Session();
-//        ses1.setId(12);
-//        a1.setSession(ses1);
-//        a1.setComment("cong chua hiphop");
-//        a1.setStatus(true);
-//
-//        Attendance a2 = new Attendance();
-//        Student stu2 = new Student();
-//        stu2.setId("HE150057");
-//        a2.setStudent(stu2);
-//        Session ses2 = new Session();
-//        ses2.setId(12);
-//        a2.setSession(ses2);
-//        a2.setComment("hoang tu hiphop");
-//        a2.setStatus(true);
-//
-//        records.add(a1);
-//        records.add(a2);
-//
-//        attendDb.insertMany(records, 12);
+        AttendanceDBContext db = new AttendanceDBContext();
+        ArrayList<Attendance> attendances = db.getStudentReport("he170863", 15);
+        System.out.println("There are " + attendances.size() + " sessions.");
+
     }
 }

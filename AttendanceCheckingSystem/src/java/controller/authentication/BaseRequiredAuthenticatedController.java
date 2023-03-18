@@ -22,8 +22,9 @@ import model.User;
 public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
 
     private boolean isAuthenticated(HttpServletRequest request) {
-        System.out.println("User is: " + request.getSession().getAttribute("user"));
-        return request.getSession().getAttribute("user") != null;
+//        System.out.println("User is: " + request.getSession().getAttribute("user"));
+//        System.out.println("User1 is: " + request.getSession().getAttribute("user1"));
+        return request.getSession().getAttribute("user1") != null;
     }
 
 //    private boolean isAuthorized(HttpServletRequest request){
@@ -40,7 +41,7 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
 //        }
 //        return false;
 //    }
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -52,18 +53,18 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+//        User user = (User) request.getSession().getAttribute("user");
+//        User user1 = (User) request.getSession().getAttribute("user1");
         if (isAuthenticated(request)) {
             boolean isAuthorized = new UserDBContext().isAuthorized(request);
             if (isAuthorized) {
-                doGet(request, response, (User) request.getSession().getAttribute("user"));
+                doGet(request, response, (User) request.getSession().getAttribute("user1"));
             } else {
-                request.getRequestDispatcher("../view/authentication/accessDenied.jsp").forward(request, response); 
-                response.getWriter().print("<h1>Authorization failed!<h1>");
+                request.getRequestDispatcher("../view/authentication/accessDenied.jsp").forward(request, response);
             }
         } else {
             System.out.println("not ok");
-//            response.sendRedirect("../login");
+            response.sendRedirect("../login");
         }
     }
 
@@ -88,19 +89,10 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
             //do business
             doPost(request, response, (User) request.getSession().getAttribute("user"));
         } else {
-//            response.getWriter().println("access denied!");
             response.sendRedirect("login");
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+
 
 }

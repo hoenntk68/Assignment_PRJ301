@@ -25,7 +25,7 @@ public class UserDBContext extends DBContext<User> {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            User user = (User) request.getSession().getAttribute("user");
+            User user = (User) request.getSession().getAttribute("user1");
             String userId = user.getUsername();
             String servletPath = request.getServletPath(); 
             String sql = "exec getUserPossibleUrls ?, ?";
@@ -126,10 +126,6 @@ public class UserDBContext extends DBContext<User> {
     }
 
     public static void main(String[] args) {
-        String userId = "sonnt5";
-        String url = "/instructor/weeklyTimetable";
-//        System.out.println(new UserDBContext().isAuthorized("sonnt5", "/instructor/weeklyTimetable"));
-//        System.out.println(new UserDBContext().isAuthorized(userId, url));
     }
 
 }

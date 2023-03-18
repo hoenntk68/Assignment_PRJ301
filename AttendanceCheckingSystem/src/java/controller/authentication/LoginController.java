@@ -33,7 +33,8 @@ public class LoginController extends HttpServlet {
         UserDBContext db = new UserDBContext();
         User user = db.get(username, password);
         if (user != null) {
-            request.getSession().setAttribute("user", user);
+//            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("user1", user);
             response.sendRedirect("index.html");
         } else {
             boolean loginFailed = true;
