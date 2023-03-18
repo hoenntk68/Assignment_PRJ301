@@ -29,32 +29,6 @@ import model.User;
  */
 public class StudentTimetableController extends BaseRequiredAuthenticatedController {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet StudentTimetableController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet StudentTimetableController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
         String date = request.getParameter("date");
@@ -62,7 +36,7 @@ public class StudentTimetableController extends BaseRequiredAuthenticatedControl
             Calendar cal = Calendar.getInstance();
             date = TimeUtil.getDateString(cal);
         }
-        String studentId = user.getUsername().toUpperCase();
+//        String studentId = user.getUsername().toUpperCase();
         String monday = TimeUtil.getMonday(date);
         String sunday = TimeUtil.getSunday(date);
         ArrayList<Date> dates = DateTimeHelper.getListDates(Date.valueOf(monday), Date.valueOf(sunday));
@@ -71,7 +45,7 @@ public class StudentTimetableController extends BaseRequiredAuthenticatedControl
         Date today = Date.valueOf(now);
 
         AttendanceDBContext sessionDb = new AttendanceDBContext();
-        ArrayList<Attendance> attendances = sessionDb.getStudentTimetable(studentId, monday); 
+        ArrayList<Attendance> attendances = sessionDb.getStudentTimetable(user.getUsername(), monday);
 
         request.setAttribute("today", today);
         request.setAttribute("dates", dates);

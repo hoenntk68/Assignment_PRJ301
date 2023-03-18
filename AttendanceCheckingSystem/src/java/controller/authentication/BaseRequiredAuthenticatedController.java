@@ -58,11 +58,12 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
             if (isAuthorized) {
                 doGet(request, response, (User) request.getSession().getAttribute("user"));
             } else {
-                response.sendRedirect("../view/authentication/accessDenied.jsp"); 
+                request.getRequestDispatcher("../view/authentication/accessDenied.jsp").forward(request, response); 
                 response.getWriter().print("<h1>Authorization failed!<h1>");
             }
         } else {
-            response.sendRedirect("../login");
+            System.out.println("not ok");
+//            response.sendRedirect("../login");
         }
     }
 

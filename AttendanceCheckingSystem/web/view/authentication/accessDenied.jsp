@@ -80,7 +80,7 @@
         <div>
             <h1>Access Denied</h1>
             <p>We're sorry, but you do not have permission to access this page.</p>
-            <a href="../../" class="button">Return to Homepage</a>
+            <a href="/AttendanceCheckingSystem" class="button">Return to Homepage</a>
         </div>
     </body>
 </html>

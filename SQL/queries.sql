@@ -218,7 +218,7 @@ end
 
 
 /*
----------------------------------GET ABSENT PERCENTAGE FROM GROUPID & STUDENTID---------------------------------
+---------------------------------GET ABSENT PERCENTAGE FROM GROUPID---------------------------------
 Return groupName from given groupId
 */
 go
@@ -317,6 +317,88 @@ end
 
 -- drop proc getStudentTimetable
 -- exec getStudentTimetable 'HE170863', '2023-3-13'
+
+/*
+---------------------------------GET GROUP ATTENDANCE REPORT GIVEN STUDENT ID AND GROUP ID---------------------------------
+*/
+go
+create proc getCourseReportForStudent
+@studentId varchar(8),
+@groupId int
+as
+begin
+	select ses.date, ses.roomId, ses.lecturerId, ISNULL(ses.status, 0) as sessionStatus,
+		ts.slotNumber, ts.startTime, ts.endTime,
+		g.groupName, 
+		ISNULL(a.status, 0) as attendStatus, ISNULL(a.comment, '') as comment
+		from [Group] g 
+		join Session ses on g.groupId = ses.groupId
+		join Participate p on g.groupId = p.groupId and p.studentId = @studentId
+		left join Attend a on ses.sessionId = a.sessionId and a.studentId = @studentId
+		join TimeSlot ts on ses.slotId = ts.slotId
+	where
+		ses.groupId = @groupId
+end
+
+-- drop proc getCourseReportForStudent
+-- exec getCourseReportForStudent 'HE170863', 12
+
+/*
+---------------------------------GET NO OF ABSENTS GIVEN STUDENT ID AND GROUP ID---------------------------------
+*/
+go
+create proc getAbsentStatForStudent
+@studentId varchar(8),
+@groupId int
+as
+begin
+	select count(*) as noOfAbsent
+		from [Group] g 
+		join Session ses on g.groupId = ses.groupId
+		join Participate p on g.groupId = p.groupId and p.studentId = @studentId
+		left join Attend a on ses.sessionId = a.sessionId and a.studentId = @studentId
+		join TimeSlot ts on ses.slotId = ts.slotId
+	where
+		ses.groupId = @groupId
+		and a.status = 0 and ses.status = 1
+end
+
+-- drop proc getAbsentStatForStudent
+-- exec getAbsentStatForStudent 'HE150057', 15
+
+
+/*
+---------------------------------GET ALL GROUP GIVEN STUDENT ID ---------------------------------
+*/
+go
+create proc getGroupFromStudentId
+@studentId varchar(8)
+as
+begin
+	select c.courseId, c.courseName, g.groupName
+		from Student stu
+		join Participate p on stu.studentId = p.studentId
+		join [Group] g on p.groupId = g.groupId
+		join Course c on g.courseId = c.courseId
+	where stu.studentId = @studentId
+end
+
+-- drop proc getGroupFromStudentId
+-- exec getGroupFromStudentId 'HE170863'
+
+
+select ses.date, ses.roomId, ses.lecturerId, ISNULL(ses.status, 0) as sessionStatus,
+	ts.slotNumber, ts.startTime, ts.endTime,
+	g.groupName, 
+	ISNULL(a.status, 0) as attendStatus, ISNULL(a.comment, '') as comment
+	from [Group] g 
+	join Session ses on g.groupId = ses.groupId
+	join Participate p on g.groupId = p.groupId and p.studentId = 'HE170863'
+	left join Attend a on ses.sessionId = a.sessionId and a.studentId = 'HE170863'
+	join TimeSlot ts on ses.slotId = ts.slotId
+where
+	ses.groupId = 15
+
 
 
 select 

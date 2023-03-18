@@ -67,20 +67,20 @@
             input[type="submit"]:hover{
                 transform: scaleX(1.05);
             }
-            
+
             p{
                 margin: 3px;
             }
-            
+
             .attended{
                 color: green;
                 margin: 1px
             }
-            
+
             .not-yet{
                 color: red;
             }
-            
+
             .take-attend{
                 text-decoration: none;
                 background-color: #FFA500;
@@ -101,11 +101,11 @@
             Lecturer: <input type="text" value="${user.username}" disabled="disabled"/>
         </div>
 
-            
-        <table>
-            <tr class="table-head">
-                <td>
-                    <c:set var="currentDate" value="${requestScope.date}"></c:set>
+
+        <c:set var="currentDate" value="${requestScope.date}"></c:set>
+            <table>
+                <tr class="table-head">
+                    <td>
                         <form action="weeklyTimetable">
                             <input type="date" name="date" value="${requestScope.date}"/>
                         <br/>

@@ -139,7 +139,7 @@
                                             class="absent"
                                         </c:if>
                                         >
-                                        <c:if test="${session.status && requestScope.today != session.date}">
+                                        <c:if test="${attendance.status}">
                                             (Attended)
                                         </c:if>
                                         <c:if test="${!attendance.status && attendance.firstTaken == 0}">
