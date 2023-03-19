@@ -16,18 +16,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class TimeUtil {
 
-//    public static String getMonday(Date date) {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(date);
-//        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-//        int daysUntilMonday = (dayOfWeek - Calendar.MONDAY + 7) % 7;
-//        calendar.add(Calendar.DAY_OF_YEAR, -daysUntilMonday);
-//        String monString = "" + calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DATE);
-//        Date mon = calendar.getTime();
-//        return monString;
-//    }
     /**
-     *
      * @param date in yyyy-[m]m-[d]d format
      * @return the Monday of the corresponding week
      */
@@ -58,7 +47,6 @@ public class TimeUtil {
     }
 
     /**
-     *
      * @param Calendar date object
      * @return a string represent the corresponding date
      */
@@ -67,7 +55,6 @@ public class TimeUtil {
     }
 
     /**
-     *
      * @param date in yyyy-[m]m-[d]d format
      * @return int array consisting of 3 elements representing yyyy, mm, dd
      */

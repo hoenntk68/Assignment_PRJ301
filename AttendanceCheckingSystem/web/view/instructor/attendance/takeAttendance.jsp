@@ -15,6 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Session Attendance Report</title>
+        <link rel="icon" href="https://play-lh.googleusercontent.com/BFYTO8vhN2ZveSWA7XGoQVwei9cCvpi2je5eyDI2a1WoKxTjJJw5Sv8ULoQEGqAYo0g" type="image/x-icon">
         <style>
             h1, h3{
                 text-align: center;
@@ -104,23 +105,58 @@
             input[name*="comment"]{
                 height: 100px;
             }
-        </style>
 
-        <!--        <script>
-                    const targetDate = new Date('2023-03-03T23:59:59'); // Set the target date and time
-                    const currentTime = new Date(); // Get current system time
-        
-                    if (currentTime > targetDate) {
-                        // If current time exceeds target date and time, disable all input tags
-                        const inputs = document.querySelectorAll('input');
-                        inputs.forEach(input => {
-                            input.disabled = true;
-                        });
-                    }
-        
-                </script>-->
+            /*NAVBAR*/
+
+            .navbar {
+                background-color: #f05123;
+                color: #fff;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                margin-bottom: 50px;
+            }
+
+            .navbar-logo {
+                font-size: 24px;
+                font-weight: bold;
+                text-decoration: none;
+                color: #fff;
+            }
+
+            .navbar-links {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .navbar-links a {
+                margin-left: 20px;
+                text-decoration: none;
+                color: #fff;
+                font-weight: bold;
+                font-size: 18px;
+            }
+
+            .navbar-links a:hover {
+                color: #eee;
+                text-shadow: 1px 1px 1px #eee;
+            }
+
+        </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
+
+        <nav class="navbar">
+
+            <a href="/AttendanceCheckingSystem" class="navbar-logo"><i class="fa-solid fa-house-chimney"></i></a>
+            <div class="navbar-links">
+                <a href="../logout">Logout</a>
+            </div>
+        </nav> 
+
         <c:set var="session" value="${requestScope.session}"></c:set>
         <c:set value="${requestScope.isEditable}" var="isEditable"></c:set>
         <!--<h1>${noOfStudent} students found</h1>-->

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.attendance;
+package controller.list;
 
 import controller.authentication.BaseRequiredAuthenticatedController;
-import dal.AttendanceDBContext;
+import dal.GroupDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,26 +13,23 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import model.Attendance;
+import model.Group;
 import model.User;
 
 /**
  *
  * @author Hp
  */
-public class StudentAttendanceController extends BaseRequiredAuthenticatedController {
+public class TeacherGroupListController extends BaseRequiredAuthenticatedController {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
-        int groupId = Integer.parseInt(request.getParameter("groupId"));
+        String username = user.getUsername();
+        GroupDBContext groupDb = new GroupDBContext();
+        ArrayList<Group> groups = groupDb.getGroupsForInstructor(username);
         
-        AttendanceDBContext attendanceDb = new AttendanceDBContext();
-        ArrayList<Attendance> records = attendanceDb.getStudentReport(user.getUsername(), groupId);
-        request.setAttribute("records", records);
-        AttendanceDBContext attendanceDb1 = new AttendanceDBContext();
-        int absentCount = attendanceDb1.getAbsentStatForStudent(user.getUsername(), groupId);
-        request.setAttribute("absentCount", absentCount);
-        request.getRequestDispatcher("../view/student/reportForStudent.jsp").forward(request, response);
+        request.setAttribute("groups", groups);
+        request.getRequestDispatcher("../view/instructor/group/groupList.jsp").forward(request, response);
     }
 
     @Override

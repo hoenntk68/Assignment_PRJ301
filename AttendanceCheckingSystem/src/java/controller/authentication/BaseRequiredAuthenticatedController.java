@@ -41,7 +41,6 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
 //        }
 //        return false;
 //    }
-    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -63,7 +62,7 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
                 request.getRequestDispatcher("../view/authentication/accessDenied.jsp").forward(request, response);
             }
         } else {
-            System.out.println("not ok");
+            System.out.println("not ok - from BaseRequired");
             response.sendRedirect("../login");
         }
     }
@@ -92,7 +91,5 @@ public abstract class BaseRequiredAuthenticatedController extends HttpServlet {
             response.sendRedirect("login");
         }
     }
-
-
 
 }

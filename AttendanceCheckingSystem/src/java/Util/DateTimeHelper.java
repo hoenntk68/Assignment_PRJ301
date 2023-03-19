@@ -4,6 +4,8 @@
  */
 package Util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -16,8 +18,7 @@ public class DateTimeHelper {
     public static ArrayList<java.sql.Date> getListDates(java.sql.Date from, java.sql.Date to) {
         ArrayList<java.sql.Date> dates = new ArrayList<>();
         java.sql.Date loop = from;
-        while(loop.compareTo(to) <= 0)
-        {
+        while (loop.compareTo(to) <= 0) {
             dates.add(loop);
             java.util.Date d = convertSqlToUtilDate(loop);
             d = addDays(d, 1);
@@ -50,6 +51,17 @@ public class DateTimeHelper {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
+    }
+
+    public static String now() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return currentTime.format(formatter);
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(DateTimeHelper.now());
     }
 
 }

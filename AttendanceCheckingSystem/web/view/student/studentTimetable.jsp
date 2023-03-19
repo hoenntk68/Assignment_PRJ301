@@ -88,10 +88,58 @@
                 margin: 1px 0;
             }
 
+            /*NAVBAR*/
+
+            .navbar {
+                background-color: #f05123;
+                color: #fff;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                margin-bottom: 50px;
+            }
+
+            .navbar-logo {
+                font-size: 24px;
+                font-weight: bold;
+                text-decoration: none;
+                color: #fff;
+            }
+
+            .navbar-links {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .navbar-links a {
+                margin-left: 20px;
+                text-decoration: none;
+                color: #fff;
+                font-weight: bold;
+                font-size: 18px;
+            }
+
+            .navbar-links a:hover {
+                color: #eee;
+                text-shadow: 1px 1px 1px #eee;
+            }
+
         </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
-        <c:set var="user" value="${requestScope.user}"></c:set>
+
+        <nav class="navbar">
+
+            <a href="/AttendanceCheckingSystem" class="navbar-logo"><i class="fa-solid fa-house-chimney"></i></a>
+            <div class="navbar-links">
+                <a href="../logout">Logout</a>
+            </div>
+        </nav>  
+
+        <c:set var="user" value="${sessionScope.user1}"></c:set>
         <c:set var="currentDate" value="${requestScope.date}"></c:set>
             <h1 style="text-align: center">
                 Weekly Timetable
@@ -100,7 +148,7 @@
             </h1>
             <br/>
             <div style="text-align: center; margin-bottom: 10px">
-                Lecturer: <input type="text" value="${user.username}" disabled="disabled"/>
+                Student: <input type="text" value="${user1.username}" disabled="disabled"/>
         </div>
 
 

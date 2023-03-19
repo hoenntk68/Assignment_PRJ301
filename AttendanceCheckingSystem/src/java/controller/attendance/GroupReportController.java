@@ -29,15 +29,6 @@ import model.User;
  */
 public class GroupReportController extends BaseRequiredAuthenticatedController {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -54,17 +45,6 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
             out.println("</html>");
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
@@ -112,12 +92,12 @@ public class GroupReportController extends BaseRequiredAuthenticatedController {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public static void main(String[] args) {
         AttendanceDBContext attendDb = new AttendanceDBContext();
         HashMap<String, Integer> absent = attendDb.getAbsenceStat(15);
+        System.out.println(absent.size());
         for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
             String key = entry.getKey();
             int value = entry.getValue();

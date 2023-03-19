@@ -143,4 +143,112 @@ public class GroupDBContext extends DBContext<Group> {
         return groups;
     }
 
+    public ArrayList<Group> getGroupsForInstructor(String instructorId) {
+        ArrayList<Group> groups = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getGroupFromInstructorId ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, instructorId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Group group = new Group();
+                Course course = new Course();
+                Instructor instructor = new Instructor();
+                group.setId(rs.getInt("groupId"));
+                group.setName(rs.getString("groupName"));
+                course.setId(rs.getString("courseId"));
+                course.setName(rs.getString("courseName"));
+//                instructor.setId(rs.getString("instructorId"));
+//                instructor.setName(rs.getString("instructorName"));
+                group.setCourse(course);
+                group.setInstructor(instructor);
+                groups.add(group);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(GroupDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(GroupDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(GroupDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return groups;
+    }
+
+    public ArrayList<Group> getGroupsForStudent(String studentId) {
+        ArrayList<Group> groups = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "exec getGroupFromStudentId ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, studentId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Group group = new Group();
+                Course course = new Course();
+                Instructor instructor = new Instructor();
+                group.setId(rs.getInt("groupId"));
+                group.setName(rs.getString("groupName"));
+                course.setId(rs.getString("courseId"));
+                course.setName(rs.getString("courseName"));
+                group.setCourse(course);
+                groups.add(group);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(GroupDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(GroupDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(GroupDBContext.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return groups;
+    }
+
+    public static void main(String[] args) {
+        GroupDBContext db = new GroupDBContext();
+        ArrayList<Group> groups = db.getGroupsForInstructor("sonnt5");
+        System.out.println(groups.size() + " found");
+    }
 }

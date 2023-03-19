@@ -13,8 +13,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Group Attendance Report</title>
+        <title>View Attendance By Group</title>
+        <link rel="icon" href="https://play-lh.googleusercontent.com/BFYTO8vhN2ZveSWA7XGoQVwei9cCvpi2je5eyDI2a1WoKxTjJJw5Sv8ULoQEGqAYo0g" type="image/x-icon">
         <style>
+
+            .attend{
+                color: rgb(0, 128, 0);
+            }
+
+            .absent{
+                color: red;
+            }
+
             table {
                 /* width: 100vw; */
                 table-layout: auto;
@@ -107,25 +117,77 @@
                 border: 1px solid grey;
             }
 
+            /*NAVBAR*/
+
+            .navbar {
+                background-color: #f05123;
+                color: #fff;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                margin-bottom: 50px;
+            }
+
+            .navbar-logo {
+                font-size: 24px;
+                font-weight: bold;
+                text-decoration: none;
+                color: #fff;
+            }
+
+            .navbar-links {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .navbar-links a {
+                margin-left: 20px;
+                text-decoration: none;
+                color: #fff;
+                font-weight: bold;
+                font-size: 18px;
+            }
+
+            .navbar-links a:hover {
+                color: #eee;
+                text-shadow: 1px 1px 1px #eee;
+            }
+
         </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
+
+        <nav class="navbar">
+
+            <a href="/AttendanceCheckingSystem" class="navbar-logo"><i class="fa-solid fa-house-chimney"></i></a>
+            <div class="navbar-links">
+                <a href="../logout">Logout</a>
+            </div>
+        </nav> 
+
         <h1 style="text-align: center">Attendance report for group ${requestScope.group.name}</h1>
         <c:set var="noOfSession" value="${requestScope.sessions.size()}"></c:set>
         <c:set var="noOfStudent" value="${requestScope.students.size()}"></c:set>  
-        <table>
-            <tr class="table-head">
-                <td>No</td>
-                <td class="name" style="min-width: 150px">Name</td>
-                <td>Code</td>
-                <td>Image</td>
-                <td>Absent</td>
+            <table>
+                <tr class="table-head">
+                    <td style="padding: 15px">No</td>
+                    <td class="name" style="min-width: 150px">Name</td>
+                    <td>Code</td>
+                    <td>Image</td>
+                    <td>Absent</td>
                 <c:forEach items="${requestScope.sessions}" var="session" varStatus="iSession">
                     <td>
-                        S${iSession.index + 1}
+                        <a 
+                            href="sessionAttendance?sessionId=${session.id}"
+                            style="color: white; text-shadow: 1px 1px 1px #eee"
+                            >S${iSession.index + 1}</a>
+
                         <br/>
                         <fmt:formatDate value="${session.date}" pattern="dd/MM"></fmt:formatDate>
-                    </td>
+                        </td>
                 </c:forEach>
             </tr>
 
@@ -145,18 +207,48 @@
                         </c:forEach>
                     </td>
                     <c:forEach items="${requestScope.sessions}" var="session" varStatus="iSession">
+                        <!--                        <td>
+                                                    <input type="checkbox" disabled="disabled"
+                        <%--<c:forEach items="${requestScope.records}" var="record" varStatus="iRecord">
+                                                               <c:if test="${record.session.id eq session.id && record.student.id eq student.id && record.status}">
+                                                                   checked="checked"
+                                                               </c:if>
+                                                           </c:forEach>--%>
+                        />
+             </td>-->
                         <td>
-                            <input type="checkbox" disabled="disabled"
-                                   <c:forEach items="${requestScope.records}" var="record" varStatus="iRecord">
-                                       <c:if test="${record.session.id eq session.id && record.student.id eq student.id && record.status}">
-                                           checked="checked"
-                                       </c:if>
-                                   </c:forEach>
-                                   />
+                            <c:forEach items="${requestScope.records}" var="record" varStatus="iRecord">
+                                <c:if test="${record.session.id eq session.id && record.student.id eq student.id}">
+                                    <c:if test="${record.status}">
+                                        <p class="attend">P</p>
+                                    </c:if>
+                                    <c:if test="${!record.status && record.session.status}">
+                                        <p class="absent">A</p>
+                                    </c:if>
+                                    <c:if test="${!record.status && !record.session.status}">
+                                        <p class="not-yet">-</p>
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
                         </td>
                     </c:forEach>
                 </tr>
             </c:forEach>
         </table>
+
+        <div>
+            <p style="font-weight: bold">Note</p>
+            <ul>
+                <li>
+                    <p><span class="attend">attend</span>: the student had attended this session</p>
+                </li>
+                <li>
+                    <p><span class="absent">absent</span>: the student had NOT attended this session</p>
+                </li>
+                <li>
+                    <p><span>-</span>: no data was given</p>
+                </li>
+            </ul>
+        </div>
     </body>
 </html>

@@ -4,11 +4,13 @@
  */
 package dal;
 
+import Util.DateTimeHelper;
 import Util.TimeUtil;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -149,6 +151,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 Attendance record = new Attendance();
                 Session session = new Session();
                 session.setId(rs.getInt("sessionId"));
+                session.setStatus(rs.getBoolean("sessionStatus"));
 //                session.setDate(rs.getDate("date"));
                 record.setSession(session);
 
@@ -157,7 +160,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 student.setName(rs.getString("studentName"));
                 student.setImage("studentImage");
                 record.setStudent(student);
-                record.setStatus(rs.getBoolean("status"));
+                record.setStatus(rs.getBoolean("attendStatus"));
 
                 records.add(record);
             }
@@ -348,30 +351,33 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             updateSessionStm.executeUpdate();
             statements.add(updateSessionStm);
 
-            //PROCESS Attendace records
+            String now = DateTimeHelper.now();
+//PROCESS Attendace records
             for (Attendance attendance : attendances) {
                 if (attendance.getFirstTaken() == 0) //INSERT
                 {
                     String sqlInsertAttendance = "INSERT INTO Attend\n"
-                            + "(studentId, sessionId, status, comment, firstTaken) \n"
-                            + "VALUES (?, ?, ?, ?, ?)";
+                            + "(studentId, sessionId, status, comment, recordTime, firstTaken) \n"
+                            + "VALUES (?, ?, ?, ?, ?, ?)";
                     PreparedStatement insertStm = connection.prepareStatement(sqlInsertAttendance);
                     insertStm.setString(1, attendance.getStudent().getId());
                     insertStm.setInt(2, sessionId);
                     insertStm.setBoolean(3, attendance.isStatus());
                     insertStm.setString(4, attendance.getComment());
-                    insertStm.setInt(5, 1);
+                    insertStm.setString(5, now);
+                    insertStm.setInt(6, 1);
                     insertStm.executeUpdate();
                     statements.add(insertStm);
 
                 } else //UPDATE
                 {
-                    String sqlUpdateAttendance = "UPDATE Attend SET status = ?, comment = ? WHERE studentId = ? and sessionId = ?";
+                    String sqlUpdateAttendance = "UPDATE Attend SET status = ?, comment = ?, recordTime = ? WHERE studentId = ? and sessionId = ?";
                     PreparedStatement updateStm = connection.prepareStatement(sqlUpdateAttendance);
                     updateStm.setBoolean(1, attendance.isStatus());
                     updateStm.setString(2, attendance.getComment());
-                    updateStm.setString(3, attendance.getStudent().getId());
-                    updateStm.setInt(4, sessionId);
+                    updateStm.setString(3, now);
+                    updateStm.setString(4, attendance.getStudent().getId());
+                    updateStm.setInt(5, sessionId);
                     updateStm.executeUpdate();
                     statements.add(updateStm);
                 }
@@ -463,33 +469,33 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             rs = stm.executeQuery();
             while (rs.next()) {
                 Attendance attendance = new Attendance();
-                
+
                 attendance.setStatus(rs.getBoolean("attendStatus"));
                 attendance.setComment(rs.getString("comment"));
                 attendance.setFirstTaken(rs.getInt("firstTaken"));
-                
+
                 Session session = new Session();
                 session.setDate(rs.getDate("date"));
-                
+
                 Room room = new Room();
                 room.setId(rs.getString("roomId"));
                 session.setRoom(room);
-                
+
                 Instructor instructor = new Instructor();
                 instructor.setId(rs.getString("lecturerId"));
                 session.setInstructor(instructor);
-                
+
                 TimeSlot timeSlot = new TimeSlot();
                 timeSlot.setNumber(rs.getInt("slotNumber"));
                 timeSlot.setStartTime(rs.getTime("startTime"));
                 timeSlot.setEndTime(rs.getTime("endTime"));
                 session.setTimeslot(timeSlot);
-                
+
                 Group group = new Group();
                 group.setId(groupId);
                 group.setName(rs.getString("groupName"));
                 session.setGroup(group);
-                
+
                 Student student = new Student();
                 student.setId(studentId);
                 attendance.setStudent(student);
@@ -520,10 +526,53 @@ public class AttendanceDBContext extends DBContext<Attendance> {
 
     }
 
-    public static void main(String[] args) {
-        AttendanceDBContext db = new AttendanceDBContext();
-        ArrayList<Attendance> attendances = db.getStudentReport("he170863", 15);
-        System.out.println("There are " + attendances.size() + " sessions.");
+    public int getAbsentStatForStudent(String studentId, int groupId) {
+        int count = -1;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            String sql = "exec getAbsentStatForStudent ?, ?";
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, studentId);
+            stm.setInt(2, groupId);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("noOfAbsent");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
+            try {
+                stm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+//        AttendanceDBContext db = new AttendanceDBContext();
+////        ArrayList<Attendance> attendances = db.getStudentReport("he170863", 15);
+//        System.out.println("There are " + db.getAbsentStatForStudent("HE150057", 15));
+        AttendanceDBContext attendDb = new AttendanceDBContext();
+        HashMap<String, Integer> absent = attendDb.getAbsenceStat(15);
+        System.out.println(absent.size());
+        for (HashMap.Entry<String, Integer> entry : absent.entrySet()) {
+            String key = entry.getKey();
+            int value = entry.getValue();
+            System.out.println(key + " :\t" + value + "%");
+        }
     }
 }
