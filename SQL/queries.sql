@@ -75,7 +75,6 @@ create proc getGroupReport
 @groupId int
 as
 begin
-	declare @absent int
 	select a.sessionId, a.studentId, stu.studentName, stu.studentImage, a.status
 	from Attend a join Session s on a.sessionId = s.sessionId
 	join Student stu on a.studentId = stu.studentId
@@ -85,6 +84,15 @@ end
 
 --drop proc getGroupReport
 --exec getGroupReport 15
+
+select ses.sessionId, stu.studentId, stu.studentName, stu.studentImage, ISNULL(a.status, 0) as attendStatus, ISNULL(a.sessionId, 0) as sessionStatus
+from
+Student stu join Participate p on stu.studentId = p.studentId
+join [Group] g on p.groupId = g.groupId
+join Session ses on ses.groupId = g.groupId
+left join Attend a on stu.studentId = a.studentId and ses.sessionId = a.sessionId
+where g.groupId = 15
+
 
 /*
 ---------------------------------GET STUDENTS FROM GROUPID---------------------------------
@@ -330,7 +338,7 @@ begin
 	select ses.date, ses.roomId, ses.lecturerId, ISNULL(ses.status, 0) as sessionStatus,
 		ts.slotNumber, ts.startTime, ts.endTime,
 		g.groupName, 
-		ISNULL(a.status, 0) as attendStatus, ISNULL(a.comment, '') as comment
+		ISNULL(a.status, 0) as attendStatus, ISNULL(a.comment, '') as comment, ISNULL(a.firstTaken, 0) as firstTaken
 		from [Group] g 
 		join Session ses on g.groupId = ses.groupId
 		join Participate p on g.groupId = p.groupId and p.studentId = @studentId
@@ -375,7 +383,7 @@ create proc getGroupFromStudentId
 @studentId varchar(8)
 as
 begin
-	select c.courseId, c.courseName, g.groupName
+	select stu.studentId, stu.studentName, g.groupId, g.groupName, c.courseId, c.courseName, g.instructorId
 		from Student stu
 		join Participate p on stu.studentId = p.studentId
 		join [Group] g on p.groupId = g.groupId
@@ -385,6 +393,29 @@ end
 
 -- drop proc getGroupFromStudentId
 -- exec getGroupFromStudentId 'HE170863'
+
+/*
+---------------------------------GET ALL GROUP GIVEN INSTRUCTOR ID---------------------------------
+*/
+go
+create proc getGroupFromInstructorId
+@instructorId varchar(20)
+as
+begin
+	select g.groupId, g.groupName, g.courseId, c.courseName
+	from Instructor i 
+	join [Group] g on i.instructorId = g.instructorId
+	join Course c on g.courseId = c.courseId
+	where i.instructorId = @instructorId
+end
+
+-- drop proc getGroupFromInstructorId
+-- exec getGroupFromInstructorId 'sonnt5'
+
+select * from Attend where sessionId = 73
+delete from Attend where sessionId = 73
+
+select * from Session where status = 0
 
 
 select ses.date, ses.roomId, ses.lecturerId, ISNULL(ses.status, 0) as sessionStatus,
