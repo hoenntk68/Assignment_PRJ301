@@ -75,11 +75,18 @@ create proc getGroupReport
 @groupId int
 as
 begin
-	select a.sessionId, a.studentId, stu.studentName, stu.studentImage, a.status
+	/*select a.sessionId, a.studentId, stu.studentName, stu.studentImage, a.status
 	from Attend a join Session s on a.sessionId = s.sessionId
 	join Student stu on a.studentId = stu.studentId
 	group by a.sessionId, s.groupId, a.studentId, stu.studentName, stu.studentImage, a.status
-	having s.groupId = @groupId
+	having s.groupId = @groupId */
+	select ses.sessionId, stu.studentId, stu.studentName, stu.studentImage, ISNULL(a.status, 0) as attendStatus, ISNULL(a.sessionId, 0) as sessionStatus
+	from
+	Student stu join Participate p on stu.studentId = p.studentId
+	join [Group] g on p.groupId = g.groupId
+	join Session ses on ses.groupId = g.groupId
+	left join Attend a on stu.studentId = a.studentId and ses.sessionId = a.sessionId
+	where g.groupId = @groupId
 end
 
 --drop proc getGroupReport
@@ -447,3 +454,13 @@ where
 	and ses.date between @startWeek and DATEADD(day, 6, @startWeek)
 
 
+select * from Session where status = 0
+
+select * from Student stu 
+	join Participate p on stu.studentId  = p.studentId
+	join [Group] g on g.groupId = p.groupId
+	join Session ses on ses.groupId = g.groupId
+where ses.status = 0
+order by ses.sessionId
+
+insert into Attend(studentId, sessionId, status, firstTaken, comment, recordTime) values ()
