@@ -35,7 +35,7 @@ public class LoginController extends HttpServlet {
         if (user != null) {
 //            request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("user1", user);
-            response.sendRedirect("index.html");
+            response.sendRedirect("/AttendanceCheckingSystem");
         } else {
             boolean loginFailed = true;
             request.setAttribute("loginFailed", loginFailed);

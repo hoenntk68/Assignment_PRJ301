@@ -136,7 +136,7 @@
                 <a href="../logout">Logout</a>
             </div>
         </nav>        
-        <h1>${requestScope.groups.size()} group(s) found for ${sessionScope.user1.username}</h1>
+        <h1>${requestScope.groups.size()} group(s) found for ${sessionScope.user1.displayname} ${sessionScope.user1.username}</h1>
         <table>
             <tr class="table-head">
                 <td>No</td>
