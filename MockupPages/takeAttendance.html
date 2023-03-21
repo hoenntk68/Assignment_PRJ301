@@ -59,7 +59,21 @@
             border: 1px solid black;
         }
     </style>
-    <script src="./script.js"></script>
+    <script>
+        function toggleView(stuID, buttonId) {
+            const myImg = document.getElementById(stuID);
+            const myBtn = document.getElementById(buttonId);
+            console.log(myImg);
+            console.log(myBtn.innerHTML)
+            if (triggerer.innerHTML == 'View image') {
+                myImg.style.display = 'inline';
+                myBtn.innerHTML = 'Hide image';
+            } else {
+                myImg.style.display = 'none';
+                myBtn.innerHTML = 'View image';
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -93,8 +107,8 @@
                 <td>Nguyễn Thị Khánh Huyền</td>
                 <td>
                     <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <!-- <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button> -->
+                    <br>
+                    <button id="forhe170863" class="clickable" onclick="toggleView('he170863', 'forhe170863')">Hide image</button>
                 </td>
                 <td class="status">
                     <input type="radio" name="isPresent" value="absent" id="abs" />

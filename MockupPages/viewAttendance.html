@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Attendance</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         table tr td:first-child,
         table tr td:nth-child(2),
@@ -39,16 +43,52 @@
             background-color: black;
         }
 
-        td.attend{
-            color:rgb(0, 184, 0);
+        td.attend {
+            color: rgb(0, 184, 0);
         }
 
-        td.absent{
+        td.absent {
             color: red;
+        }
+
+
+
+
+        /* Scroll to top button */
+        .scroll-to-top-btn {
+            /* display: none; */
+            /* Hide button by default */
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+        }
+
+        /* Show button when user starts scrolling */
+        .scroll-to-top-btn.show {
+            display: block;
+        }
+
+        /* On hover, change background color and add box-shadow */
+        .scroll-to-top-btn:hover {
+            background-color: #555;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
         }
     </style>
 
     <script src="./script.js"></script>
+
 </head>
 
 <body>
@@ -57,6 +97,7 @@
     <h3>Subject: PRJ301</h3>
     <h3>Student group: ISE1723</h3>
     <h3>Room: BE-303</h3>
+    <button class="scroll-to-top-btn" onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa-solid fa-arrow-up"></i></button>
 
     <table>
         <tr class="table-head">
@@ -76,9 +117,9 @@
             <td>HE150057</td>
             <td>Nguyễn Nhật Anh</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -91,9 +132,9 @@
             <td>HE151095</td>
             <td>Nguyễn Đức Minh</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -106,9 +147,9 @@
             <td>HE153206</td>
             <td>Quách Duy Nam</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -121,9 +162,9 @@
             <td>HE160694</td>
             <td>Vũ Đình Duy</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status absent">Absent</td>
             <td></td>
@@ -136,9 +177,9 @@
             <td>HE161357</td>
             <td>Nguyễn Trường Tây</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -151,9 +192,9 @@
             <td>HE161795</td>
             <td>Dương Thành Minh</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -166,9 +207,9 @@
             <td>HE163146</td>
             <td>Bùi Việt Hùng</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -181,9 +222,9 @@
             <td>HE164035</td>
             <td>Nguyễn Tiến Anh</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -196,9 +237,9 @@
             <td>HE170051</td>
             <td>Vũ Minh Tâm</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -211,9 +252,9 @@
             <td>HE170245</td>
             <td>Bùi Hoàng Long</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -226,9 +267,9 @@
             <td>HE170422</td>
             <td>Vũ Duy Phúc</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -241,9 +282,9 @@
             <td>HE170428</td>
             <td>Trần Quang Huy</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -256,9 +297,9 @@
             <td>HE170444</td>
             <td>Lê Đức Hiếu</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status absent">Absent</td>
             <td></td>
@@ -271,9 +312,9 @@
             <td>HE170533</td>
             <td>Nguyễn Quang Lợi</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -286,9 +327,9 @@
             <td>HE170842</td>
             <td>Nguyễn Thanh Hậu</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -301,9 +342,9 @@
             <td>HE170863</td>
             <td>Nguyễn Thị Khánh Huyền</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -316,9 +357,9 @@
             <td>HE170907</td>
             <td>Phạm Trường Giang</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -331,9 +372,9 @@
             <td>HE170996</td>
             <td>Khiếu Minh Đức</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -346,9 +387,9 @@
             <td>HE171071</td>
             <td>Vũ Ngọc Nhất</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -361,9 +402,9 @@
             <td>HE171073</td>
             <td>Hoàng Mai Phương</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -376,9 +417,9 @@
             <td>HE171162</td>
             <td>Bùi Tiến Dũng</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -391,9 +432,9 @@
             <td>HE171442</td>
             <td>Văn Công Quang Minh</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -406,9 +447,9 @@
             <td>HE171482</td>
             <td>Đinh Tiến Mạnh</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -421,9 +462,9 @@
             <td>HE171578</td>
             <td>Kiều Nam Hải</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -436,9 +477,9 @@
             <td>HE171687</td>
             <td>Doãn Lâm Phúc</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -451,9 +492,9 @@
             <td>HE171851</td>
             <td>Nguyễn Đức Minh</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -466,9 +507,9 @@
             <td>HE171865</td>
             <td>Nguyễn Quang Hiếu</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -481,9 +522,9 @@
             <td>HE176182</td>
             <td>Phan Việt Anh</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -496,9 +537,9 @@
             <td>HE176697</td>
             <td>Nguyễn Thị Cẩm Tú</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -511,9 +552,9 @@
             <td>HE176751</td>
             <td>Nguyễn Quốc Đạt</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status attend">Attended</td>
             <td></td>
@@ -526,9 +567,9 @@
             <td>SE03520</td>
             <td>Shunom Peter Bala</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status absent">Absent</td>
             <td></td>
@@ -541,115 +582,38 @@
             <td>SE04495</td>
             <td>Ntui Obasi Maurice</td>
             <td>
-                    <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
-                    <br>
-                    <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
+                <img style="display: initial;" id="he170863" src="./cryingcat.jpg" alt="HuyenNTKHE170863">
+                <br>
+                <button class="clickable" onclick="toggleView('he170863', this)">Hide image</button>
             </td>
             <td class="status absent">Absent</td>
             <td></td>
             <td>sonnt5</td>
             <td>17/2/2023 13:30:00</td>
         </tr>
-        <!-- <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr> -->
+
     </table>
+    <script>
+        // Get the button
+        let mybutton = document.getElementById("myBtn");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
 </body>
 
 </html>
